@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/yoonjonglyu/react-tomato-talk/issues"
   },
-  "homepage": "https://github.com/yoonjonglyu/react-tomato-talk#readme"
+  "homepage": "https://github.com/yoonjonglyu/react-tomato-talk#readme",
+  "dependencies": {
+    "react": "^17.0.2",
+    "socket.io-client": "^4.4.0"
+  }
 }
