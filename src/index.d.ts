@@ -1,6 +1,6 @@
 import React from 'react';
 
-declare module 'ReactTomatoTalk' {
+declare module 'react-tomato-talk' {
     const ReactTomatoTalk: ReactTomatoTalk
 
     interface ReactTomatoTalk {
