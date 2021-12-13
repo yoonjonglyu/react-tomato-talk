@@ -2,7 +2,8 @@
   "name": "react-tomato-talk",
   "version": "1.0.0",
   "description": "리액트 오픈채팅 모듈, 익명, 오픈채팅을 제공한다.",
-  "main": "index.js",
+  "main": "src/index.js",
+  "types": "src/main.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,8 +18,14 @@
     "채팅",
     "오픈채팅"
   ],
-  "files": [],
-  "author": "ISA",
+  "files": [
+    "src"
+  ],
+  "author": {
+    "name": "ISA",
+    "email": "yunjonglyu@gmail.com",
+    "url": "https://isa-dev.tistory.com/"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/yoonjonglyu/react-tomato-talk/issues"
