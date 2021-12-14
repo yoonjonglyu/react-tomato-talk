@@ -5,10 +5,7 @@ const ChatRoom = props => {
   const {
     socket
   } = props;
-  const [chatLog, setChatLog] = useState < Array < {
-    idx: string,
-    message: string
-  } >> [];
+  const [chatLog, setChatLog] = useState([]);
   useEffect(() => {
     const handleChatLog = msg => {
       setChatLog([...chatLog, msg]);
