@@ -68,7 +68,7 @@ const io = new Server({ /* options */ });
 const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
 io.on("connection", (client) => {
     client.on('join', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에 갈지를 받는다.
-        io.join(data.room); // 해당 채팅방에 join
+        io.socketsJoin(data.room); // 해당 채팅방에 join
         usrList[data.socketIdx] = data.room; // 해당 유저가 어느 방에 들어갔는지 기록
         io.to(data.room).emit('joinRoom', data.socketIdx); // 해당 채팅방에 대화참여 메시지 전송
     });
