@@ -24,7 +24,7 @@
     "오픈채팅"
   ],
   "files": [
-    "src"
+    "dist"
   ],
   "author": {
     "name": "ISA",
