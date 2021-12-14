@@ -10,7 +10,7 @@
 
 ## 데모 버전
 
-![토마토톡](./assets/chat.jpg)
+![토마토톡](./assets/chat.jpg)  
 [토마토톡데모](https://yoonjonglyu.github.io/webChat/)
 
 **링크를 통해서 확인 가능한 데모 버전의 채팅창 부분을 모듈화한게 본 패키지입니다.**  
@@ -35,7 +35,7 @@ import ReactTomatoTalk from 'react-tomato-talk';
 const App = function () {
     const TomatoTalk = ReactTomatoTalk({
         url: 'http://localhost:444/webChat' //소켓서버 url입니다.
-    });
+    }); // config 객체를 props로 넘겨서 채팅창 컴포넌트를 반환받습니다.
    
     return (
         <main>
