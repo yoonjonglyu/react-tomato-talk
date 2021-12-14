@@ -2,10 +2,15 @@
   "name": "react-tomato-talk",
   "version": "1.0.2",
   "description": "리액트 오픈채팅 모듈, 익명, 오픈채팅을 제공한다.",
-  "main": "src/index.js",
-  "types": "src/main.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/main.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "publish:npm": "rm -rf dist && mkdir dist && babel src -d dist --copy-files"
   },
   "repository": {
     "type": "git",
@@ -31,8 +36,14 @@
     "url": "https://github.com/yoonjonglyu/react-tomato-talk/issues"
   },
   "homepage": "https://github.com/yoonjonglyu/react-tomato-talk#readme",
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
   "dependencies": {
     "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
     "@babel/preset-react": "^7.16.0",
     "react": "^17.0.2",
     "socket.io-client": "^4.4.0"
