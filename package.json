@@ -6,10 +6,6 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "publish:npm": "rm -rf dist && mkdir dist && babel src -d dist --copy-files"
   },
   "repository": {
@@ -21,7 +17,11 @@
     "soket.io",
     "chatting",
     "채팅",
-    "오픈채팅"
+    "오픈채팅",
+    "tomato",
+    "익명채팅",
+    "tomatoTalk",
+    "talk"
   ],
   "files": [
     "dist"
