@@ -1,2 +1,2 @@
-import ReactTomatoTalk from './init';
+import ReactTomatoTalk from './tomato';
 export default ReactTomatoTalk;
