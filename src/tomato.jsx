@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 
 import WebChat from './webChat';
 
-const Init = (props) => {
+const TomatoTalk = (props) => {
     const {
         url
     } = props;
@@ -12,7 +12,9 @@ const Init = (props) => {
         transports: ['websocket']
     });
 
-    return () => (<WebChat socket={Socket} />);
+    return (
+        <WebChat socket={Socket} />
+    );
 }
 
-export default Init;
+export default TomatoTalk;
