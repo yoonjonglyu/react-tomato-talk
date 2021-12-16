@@ -32,10 +32,6 @@ import React from 'react';
 import ReactTomatoTalk from 'react-tomato-talk';
 
 const App = function () {
-    const TomatoTalk = ReactTomatoTalk({
-        url: 'http://localhost:3000/' //소켓서버 url입니다.
-    }); // config 객체를 props로 넘겨서 채팅창 컴포넌트를 반환받습니다.
-   
     return (
         <main>
             채팅창
@@ -48,7 +44,9 @@ const App = function () {
                     maxHeight: "645px" // height를 통해서 채팅창 높이를 지정해줄 수 있습니다.
                 }}
             >
-                <TomatoTalk />
+                <ReactTomatoTalk
+                    url={'http://localhost:3000/'} //소켓서버 url입니다.
+                />
             </section>
         </main>
     );
