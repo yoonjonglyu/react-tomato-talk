@@ -33,7 +33,7 @@ import ReactTomatoTalk from 'react-tomato-talk';
 
 const App = function () {
     const TomatoTalk = ReactTomatoTalk({
-        url: 'http://localhost:444/webChat' //소켓서버 url입니다.
+        url: 'http://localhost:3000/' //소켓서버 url입니다.
     }); // config 객체를 props로 넘겨서 채팅창 컴포넌트를 반환받습니다.
    
     return (
@@ -62,7 +62,9 @@ const App = function () {
 
 ```js
 const { Server } = require("socket.io"); // cors 설정 주의.
-const io = new Server({ /* options */ });
+const io = new Server({
+    transports: ["websocket"] // 현재는 웹소켓 방식만 지원해준다.
+});
 
 const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
 io.on("connection", (client) => {
