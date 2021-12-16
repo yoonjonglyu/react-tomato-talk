@@ -3,7 +3,7 @@ import React from 'react';
 const ChatMessage = (props) => {
     const {
         messages,
-        userIdx
+        userId
     } = props;
 
     return (
@@ -27,7 +27,7 @@ const ChatMessage = (props) => {
                         Style.fontSize = "0.9rem";
                         Style.margin = "6px";
                     }
-                    if (current.idx === userIdx) {
+                    if (current.idx === userId) {
                         Style.background = "tomato";
                         Style.marginLeft = "auto";
                     }
@@ -45,7 +45,7 @@ const ChatMessage = (props) => {
                             }}
                         >
                             {
-                                current.idx !== '#system' && current.idx !== userIdx &&
+                                current.idx !== '#system' && current.idx !== userId &&
                                 <span
                                     style={{
                                         paddingLeft: "8px",

@@ -6,7 +6,12 @@ const ChatRoom = (props) => {
     const {
         socket
     } = props;
+    const [userId, setUserId] = useState('');
     const [chatLog, setChatLog] = useState([]);
+
+    useEffect(() => {
+        setUserId(socket.id);
+    }, [chatLog]);
     useEffect(() => {
         const handleChatLog = (msg) => {
             setChatLog([...chatLog, msg]);
@@ -48,6 +53,7 @@ const ChatRoom = (props) => {
             }
         }
     }, [chatLog]);
+    
     return (
         <div
             data-testid="chat-room"
@@ -62,7 +68,7 @@ const ChatRoom = (props) => {
         >
             <ChatMessage
                 messages={chatLog}
-                userIdx={socket.id}
+                userId={userId}
             />
         </div>
     );
