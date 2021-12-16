@@ -3,7 +3,7 @@ import React from 'react';
 const ChatMessage = props => {
   const {
     messages,
-    userIdx
+    userId
   } = props;
   return /*#__PURE__*/React.createElement(React.Fragment, null, messages.map((current, idx) => {
     const Style = {
@@ -25,7 +25,7 @@ const ChatMessage = props => {
       Style.margin = "6px";
     }
 
-    if (current.idx === userIdx) {
+    if (current.idx === userId) {
       Style.background = "tomato";
       Style.marginLeft = "auto";
     } else if (current.idx !== '#system') {
@@ -39,7 +39,7 @@ const ChatMessage = props => {
         display: "flex",
         flexFlow: "column"
       }
-    }, current.idx !== '#system' && current.idx !== userIdx && /*#__PURE__*/React.createElement("span", {
+    }, current.idx !== '#system' && current.idx !== userId && /*#__PURE__*/React.createElement("span", {
       style: {
         paddingLeft: "8px",
         fontSize: "0.8rem"

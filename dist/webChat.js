@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ChatWindow from './talk/chatWindow';
+import Loading from './loading';
 
 const WebChat = props => {
   const {
@@ -18,7 +19,14 @@ const WebChat = props => {
           socketIdx: socket.id,
           room: '#1'
         });
+        handleStep(2);
       }
+    });
+    socket.on('disconnect', () => {
+      handleStep(1);
+    });
+    socket.on('connect_error', () => {
+      handleStep(1);
     });
     return () => {
       socket.close();
@@ -30,9 +38,12 @@ const WebChat = props => {
       flexFlow: "column wrap",
       flex: "1",
       justifyContent: "center",
+      position: "relative",
       border: "1px solid #678983"
     }
-  }, step === 0 && /*#__PURE__*/React.createElement(ChatWindow, {
+  }, step < 2 && /*#__PURE__*/React.createElement(Loading, {
+    state: step
+  }), /*#__PURE__*/React.createElement(ChatWindow, {
     socket: socket
   }));
 };

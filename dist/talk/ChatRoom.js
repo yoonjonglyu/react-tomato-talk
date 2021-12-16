@@ -5,7 +5,11 @@ const ChatRoom = props => {
   const {
     socket
   } = props;
+  const [userId, setUserId] = useState('');
   const [chatLog, setChatLog] = useState([]);
+  useEffect(() => {
+    setUserId(socket.id);
+  }, [chatLog]);
   useEffect(() => {
     const handleChatLog = msg => {
       setChatLog([...chatLog, msg]);
@@ -59,7 +63,7 @@ const ChatRoom = props => {
     ref: Room
   }, /*#__PURE__*/React.createElement(ChatMessage, {
     messages: chatLog,
-    userIdx: socket.id
+    userId: userId
   }));
 };
 
