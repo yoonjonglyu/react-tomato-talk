@@ -31,7 +31,7 @@ const WebChat = (props) => {
         return () => {
             socket.close();
         }
-    }, []);
+    }, [socket]);
 
 
     return (

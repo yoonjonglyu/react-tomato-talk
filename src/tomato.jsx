@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
 import WebChat from './webChat';
@@ -7,13 +7,20 @@ const TomatoTalk = (props) => {
     const {
         url
     } = props;
+    const [socket, setSocket] = useState(io);
+    useEffect(() => {
+        setSocket(
+            io(url,
+                {
+                    transports: ['websocket']
 
-    const Socket = io(url, {
-        transports: ['websocket']
-    });
+                }
+            )
+        );
+    }, []);
 
     return (
-        <WebChat socket={Socket} />
+        <WebChat socket={socket} />
     );
 }
 
