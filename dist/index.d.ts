@@ -1,12 +1,8 @@
 import React from 'react';
 
 declare module 'react-tomato-talk' {
-    const ReactTomatoTalk: ReactTomatoTalk
-
-    interface ReactTomatoTalk {
-        (config: ReactTomatoTalkProps): React.FC
-    }
-
+    const ReactTomatoTalk: React.FC<ReactTomatoTalkProps>
+    
     interface ReactTomatoTalkProps {
         url: string
     }
