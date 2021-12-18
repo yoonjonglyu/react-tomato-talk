@@ -12,7 +12,12 @@ const ChatRoom = props => {
   }, [chatLog]);
   useEffect(() => {
     const handleChatLog = msg => {
-      setChatLog([...chatLog, msg]);
+      setChatLog([...chatLog, { ...msg,
+        time: `${new Date().toLocaleTimeString('ko-KR', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })}`
+      }]);
     };
 
     socket.once('receive', data => {

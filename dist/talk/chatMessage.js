@@ -6,7 +6,7 @@ const ChatMessage = props => {
     userId
   } = props;
   return /*#__PURE__*/React.createElement(React.Fragment, null, messages.map((current, idx) => {
-    const Style = {
+    const messageStyle = {
       maxWidth: "58%",
       padding: "8px",
       margin: "8px",
@@ -16,21 +16,30 @@ const ChatMessage = props => {
       background: "rgb(0 0 0 / 19%)",
       borderRadius: "6px"
     };
+    const boxStyle = {
+      display: "flex",
+      flex: "1",
+      flexFlow: "column",
+      width: "100%",
+      margin: 0
+    };
 
     if (current.idx === '#system') {
-      Style.maxWidth = "100%";
-      Style.textAlign = "center";
-      Style.color = "rgb(98 14 14)";
-      Style.fontSize = "0.9rem";
-      Style.margin = "6px";
+      messageStyle.maxWidth = "100%";
+      messageStyle.textAlign = "center";
+      messageStyle.color = "rgb(98 14 14)";
+      messageStyle.fontSize = "0.9rem";
+      messageStyle.margin = "6px";
     }
 
     if (current.idx === userId) {
-      Style.background = "tomato";
-      Style.marginLeft = "auto";
+      messageStyle.background = "tomato";
+      boxStyle.marginLeft = "auto";
+      boxStyle.flexFlow = "row-reverse";
     } else if (current.idx !== '#system') {
-      Style.background = "#eeeeee";
-      Style.marginRight = "auto";
+      messageStyle.background = "#eeeeee";
+      boxStyle.marginRight = "auto";
+      boxStyle.flexFlow = "row";
     }
 
     return /*#__PURE__*/React.createElement("article", {
@@ -45,8 +54,17 @@ const ChatMessage = props => {
         fontSize: "0.8rem"
       }
     }, current.idx), /*#__PURE__*/React.createElement("p", {
-      style: Style
-    }, current.message));
+      style: boxStyle
+    }, /*#__PURE__*/React.createElement("span", {
+      style: messageStyle
+    }, current.message), current.idx !== '#system' && /*#__PURE__*/React.createElement("time", {
+      style: {
+        display: "flex",
+        alignItems: "flex-end",
+        marginBottom: "8px",
+        fontSize: "0.7rem"
+      }
+    }, current.time)));
   }));
 };
 

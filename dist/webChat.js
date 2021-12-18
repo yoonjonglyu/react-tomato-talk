@@ -13,7 +13,7 @@ const WebChat = props => {
   };
 
   useEffect(() => {
-    socket.on('connect', async () => {
+    socket.on('connect', () => {
       if (socket.connected) {
         socket.emit('join', {
           socketIdx: socket.id,
@@ -31,7 +31,7 @@ const WebChat = props => {
     return () => {
       socket.close();
     };
-  }, []);
+  }, [socket]);
   return /*#__PURE__*/React.createElement("article", {
     style: {
       display: "flex",
