@@ -13,7 +13,7 @@ const WebChat = (props) => {
     }
 
     useEffect(() => {
-        socket.on('connect', async () => {
+        socket.on('connect', () => {
             if (socket.connected) {
                 socket.emit('join', {
                     socketIdx: socket.id,
