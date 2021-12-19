@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SendPoto from './sendPoto';
 
 const SendForm = props => {
   const {
@@ -42,6 +43,8 @@ const SendForm = props => {
       flex: "3 0px",
       margin: "3px 3px 0 0"
     }
+  }), /*#__PURE__*/React.createElement(SendPoto, {
+    socket: socket
   }), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     "data-testid": "chat-request",

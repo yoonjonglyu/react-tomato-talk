@@ -55,9 +55,12 @@ const ChatMessage = props => {
       }
     }, current.idx), /*#__PURE__*/React.createElement("p", {
       style: boxStyle
-    }, /*#__PURE__*/React.createElement("span", {
+    }, current.message.slice(0, 5) !== '@$IMG' ? /*#__PURE__*/React.createElement("span", {
       style: messageStyle
-    }, current.message), current.idx !== '#system' && /*#__PURE__*/React.createElement("time", {
+    }, current.message) : /*#__PURE__*/React.createElement("img", {
+      src: current.message.slice(5),
+      style: messageStyle
+    }), current.idx !== '#system' && /*#__PURE__*/React.createElement("time", {
       style: {
         display: "flex",
         alignItems: "flex-end",

@@ -6,15 +6,15 @@ const TomatoTalk = props => {
   const {
     url
   } = props;
-  const [socket, setSocket] = useState(io);
+  const [socket, setSocket] = useState(null);
   useEffect(() => {
     setSocket(io(url, {
       transports: ['websocket']
     }));
   }, []);
-  return /*#__PURE__*/React.createElement(WebChat, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, socket !== null && /*#__PURE__*/React.createElement(WebChat, {
     socket: socket
-  });
+  }));
 };
 
 export default TomatoTalk;
