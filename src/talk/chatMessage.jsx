@@ -65,9 +65,17 @@ const ChatMessage = (props) => {
                                 </span>
                             }
                             <p style={boxStyle}>
-                                <span style={messageStyle}>
-                                    {current.message}
-                                </span>
+                                {
+                                    current.message.slice(0, 5) !== '@$IMG' ?
+                                        <span style={messageStyle}>
+                                            {current.message}
+                                        </span>
+                                        :
+                                        <img
+                                            src={current.message.slice(5)}
+                                            style={messageStyle}
+                                        />
+                                }
                                 {
                                     current.idx !== '#system' &&
                                     <time
