@@ -7,20 +7,24 @@ const TomatoTalk = (props) => {
     const {
         url
     } = props;
-    const [socket, setSocket] = useState(io);
+    const [socket, setSocket] = useState(null);
     useEffect(() => {
         setSocket(
             io(url,
                 {
                     transports: ['websocket']
-
                 }
             )
         );
     }, []);
 
     return (
-        <WebChat socket={socket} />
+        <>
+            {
+                socket !== null &&
+                <WebChat socket={socket} />
+            }
+        </>
     );
 }
 
