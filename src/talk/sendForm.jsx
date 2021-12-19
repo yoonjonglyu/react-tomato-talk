@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import SendPoto from './sendPoto';
+
 const SendForm = (props) => {
     const {
         socket
@@ -43,6 +45,7 @@ const SendForm = (props) => {
                     margin: "3px 3px 0 0"
                 }}
             />
+            <SendPoto socket={socket} />
             <button
                 type="submit"
                 data-testid="chat-request"
