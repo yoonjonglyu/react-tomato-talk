@@ -33,6 +33,7 @@ const SendForm = (props) => {
                 justifyContent: "center",
                 padding: "6px",
                 background: "#DFD8CA",
+                boxShadow: "rgb(206, 202, 194) -0px -1px"
             }}
         >
             <input
@@ -42,24 +43,15 @@ const SendForm = (props) => {
                 onChange={handleMsg}
                 style={{
                     flex: "3 0px",
-                    margin: "3px 3px 0 0"
+                    margin: "3px 3px 0 0",
+                    background: "#DFD8CA",
+                    fontSize: "1rem",
+                    border: "none",
+                    outline: "none",
                 }}
+                placeholder="채팅 메시지를 입력하세요."
             />
             <SendPoto socket={socket} />
-            <button
-                type="submit"
-                data-testid="chat-request"
-                style={{
-                    margin: "3px 0 0 0",
-                    padding: "6px 12px",
-                    color: "#FBF3E4",
-                    background: "#105652",
-                    border: "0",
-                    borderRadius: "3px",
-                }}
-            >
-                전송
-            </button>
         </form>
     );
 }
