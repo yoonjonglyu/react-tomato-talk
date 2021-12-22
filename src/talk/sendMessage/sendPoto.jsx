@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PotoIcon from '../assets/poto.png';
+import PotoIcon from '../../assets/poto.png';
 
 const SendPoto = ({ socket }) => {
     const handleFile = (e) => {
