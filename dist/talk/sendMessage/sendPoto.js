@@ -1,5 +1,6 @@
 import React from 'react';
-import PotoIcon from '../assets/poto.png';
+import PotoIcon from '../../assets/poto.png';
+import ChatEvents from '../../lib/chatEvents';
 
 const SendPoto = ({
   socket
@@ -7,19 +8,12 @@ const SendPoto = ({
   const handleFile = e => {
     const file = e.target.files;
 
-    if (file[0]) {
-      if (file[0].type.split('/')[0] === 'image') {
-        const reader = new FileReader();
+    if (file !== null) {
+      const Events = new ChatEvents(socket);
+      const result = Events.sendImage(file[0]);
 
-        reader.onload = e => {
-          socket.emit('send', {
-            socketIdx: socket.id,
-            message: `@$IMG ${e.target?.result}`,
-            room: '#1'
-          });
-        };
-
-        reader.readAsDataURL(file[0]);
+      if (!result) {
+        alert('이미지 파일이 아닙니다.');
       }
     }
 

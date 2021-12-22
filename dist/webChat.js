@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ChatWindow from './talk/chatWindow';
 import Loading from './loading';
+import ChatEvents from './lib/chatEvents';
 
 const WebChat = props => {
   const {
@@ -13,19 +14,18 @@ const WebChat = props => {
   };
 
   useEffect(() => {
-    socket.on('connect', () => {
-      if (socket.connected) {
-        socket.emit('join', {
-          socketIdx: socket.id,
-          room: '#1'
-        });
-        handleStep(2);
-      }
+    const Events = new ChatEvents(socket);
+    Events.handleConnect(() => {
+      socket.emit('join', {
+        socketIdx: socket.id,
+        room: '#1'
+      });
+      handleStep(2);
     });
-    socket.on('disconnect', () => {
+    Events.handleDisConnect(() => {
       handleStep(1);
     });
-    socket.on('connect_error', () => {
+    Events.handleError(() => {
       handleStep(1);
     });
     return () => {

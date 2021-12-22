@@ -1,6 +1,6 @@
 import React from 'react';
-import ChatRoom from './chatRoom';
-import SendForm from './sendForm';
+import ChatRoom from './chatRoom/chatRoom';
+import SendForm from './sendMessage/sendForm';
 
 const ChatWindow = props => {
   const {
