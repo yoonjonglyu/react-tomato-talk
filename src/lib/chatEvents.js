@@ -19,6 +19,12 @@ class ChatEvents {
             cb();
         });
     }
+    getRooms(handleRooms) {
+        this.socket.once('rooms', (data) => {
+            handleRooms(data);
+        });
+        this.socket.emit('rooms');
+    }
     joinRoom(room) {
         this.socket.emit('join', {
             socketIdx: this.socket.id,
@@ -32,14 +38,14 @@ class ChatEvents {
             room: room
         });
     }
-    sendImage(image) {
+    sendImage(image, room) {
         if (image.type.split('/')[0] === 'image') {
             const reader = new FileReader();
             reader.onload = (e) => {
                 this.socket.emit('send', {
                     socketIdx: this.socket.id,
                     message: `@$IMG ${e.target?.result}`,
-                    room: '#1'
+                    room: room
                 });
             }
             reader.readAsDataURL(image);
@@ -61,6 +67,7 @@ class ChatEvents {
                     idx: '#system',
                     message: `${id} 님이 대화에 참여 하였습니다.`,
                 });
+                this.socket.emit('headCount');
             }
         });
         this.socket.once('leaveRoom', (id) => {
@@ -69,6 +76,7 @@ class ChatEvents {
                     idx: '#system',
                     message: `${id} 님이 대화에서 나갔습니다.`,
                 });
+                this.socket.emit('headCount');
             }
         });
     }
@@ -76,6 +84,14 @@ class ChatEvents {
         this.socket.removeAllListeners('receive');
         this.socket.removeAllListeners('joinRoom');
         this.socket.removeAllListeners('leaveRoom');
+    }
+    getHeadCount(room, handleCount) {
+        this.socket.on('headCount', (data) => {
+            handleCount(data[room]);
+        });
+    }
+    clearHeadCount() {
+        this.socket.removeAllListeners('headCount');
     }
 }
 
