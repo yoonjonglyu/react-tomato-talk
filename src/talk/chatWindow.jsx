@@ -2,6 +2,7 @@ import React from 'react';
 
 import ChatRoom from './chatRoom/chatRoom';
 import SendForm from './sendMessage/sendForm';
+import ChatHead from './chatHead/chatHead';
 
 const ChatWindow = (props) => {
     const {
@@ -10,6 +11,7 @@ const ChatWindow = (props) => {
 
     return (
         <>
+            <ChatHead socket={socket} />
             <ChatRoom socket={socket} />
             <SendForm socket={socket} />
         </>

@@ -3,6 +3,8 @@ import { io } from 'socket.io-client';
 
 import WebChat from './webChat';
 
+import RoomContextProvider from './store/roomContext';
+
 const TomatoTalk = (props) => {
     const {
         url
@@ -22,7 +24,9 @@ const TomatoTalk = (props) => {
         <>
             {
                 socket !== null &&
-                <WebChat socket={socket} />
+                <RoomContextProvider>
+                    <WebChat socket={socket} />
+                </RoomContextProvider>
             }
         </>
     );
