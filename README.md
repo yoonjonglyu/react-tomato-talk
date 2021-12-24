@@ -55,6 +55,7 @@ const App = function () {
 
 ### 벡엔드
 
+>  
 > 해당 모듈을 위해서 현재 필요한 소켓 이벤트는 connection, join, send, leave, disconnect가 있다.  
 > 기능 추가에 따라서 벡엔드 로직이 추가되거나 일부 수정 될수 있으므로 업데이트시 확인바랍니다.
 
@@ -65,11 +66,29 @@ const io = new Server({
 });
 
 const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
+const roomList = ['채팅방#1', '#1'] // 채팅방 목록 현재는 첫번째 채팅방으로 자동으로 연결됩니다.
+const rooms = { // 각 채팅방 참가자 목록
+    "채팅방#1": [],
+    "#1": [],
+}; // 채팅방 선택 기능의 경우 벡엔드 서버의 roomList의 갯수가 1개 이상일때 자동으로 활성화 됩니다.
 io.on("connection", (client) => {
+    client.on('rooms', () => { // 사용자가 요청하면 채팅방 목록을 전송
+        io.emit('rooms', roomList);
+    });
+    client.on('headCount', () => { // 사용자가 요청 할시 해당 채팅방 인원 정보를 전송
+        io.emit('headCount', rooms);
+    });
     client.on('join', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에 갈지를 받는다.
         io.socketsJoin(data.room); // 해당 채팅방에 join
         usrList[data.socketIdx] = data.room; // 해당 유저가 어느 방에 들어갔는지 기록
+        rooms[data.room].push(data.socketIdx); // 해당 채팅방 참여인원에 추가
         io.to(data.room).emit('joinRoom', data.socketIdx); // 해당 채팅방에 대화참여 메시지 전송
+    });
+    client.on('leave', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에서 나올지를 받는다.
+        io.socketsLeave(data.room); // room에서 벗어난다.
+        delete usrList[data.socketIdx]; // 해당유저가 채팅방에서 벗어남을 기록
+        rooms[data.room] = this.rooms[data.room].filter((el) => el !== data.socketIdx); // 해당 채팅방 참여 인원에서 제거
+        io.to(data.room).emit('leaveRoom', data.socketIdx); // 대화 이탈 메시지 전송
     });
     client.on('send', data => { // {message, socketIdx, room} 사용자가 보낸 메시지를 받아서 해당 채팅방에 전송
         io.to(data.room).emit('receive', {
@@ -77,14 +96,12 @@ io.on("connection", (client) => {
             idx: data.socketIdx
         });
     });
-    client.on('leave', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에서 나올지를 받는다.
-        io.socketsLeave(data.room); // room에서 벗어난다.
-        delete usrList[data.socketIdx]; // 해당유저가 채팅방에서 벗어남을 기록
-        io.to(data.room).emit('leaveRoom', data.socketIdx); // 대화 이탈 메시지 전송
-    });
     client.on('disconnect', () => { // 연결해제시 채팅서버에 기록된 해당 유저의 채팅방에 이탈 메시지 전송
-        io.to(this.usrList[client.id]).emit('leaveRoom', client.id); // 대화이탈에 대한 메시지 전송
-        delete usrList[client.id]; // 메모리에서 해당 유저의 데이터 삭제
+        if(usrList[client.id]){
+            io.to(usrList[client.id]).emit('leaveRoom', client.id); // 대화이탈에 대한 메시지 전송
+            rooms[usrList[client.id]] = rooms[usrList[client.id]].filter((el) => el !== client.id); // 해당 채팅방 참여 인원에서 제거
+            delete usrList[client.id]; // 메모리에서 해당 유저의 데이터 삭제
+        }
     });
 });
 
@@ -93,7 +110,14 @@ io.listen(3000);
 
 ### Props
 
-1. **`url(string)`** : 소켓서버의 url입니다. 
+1. **`url(string)`** : 소켓서버의 url입니다.  
+
+### 벡엔드 소켓 이벤트
+
+1. **`rooms`** : 채팅방 목록을 보내주는 이벤트입니다. `['채팅방#1']` 으로 채팅방 이름 목록을 보내줄 수 있습니다.(현재는 다중 채팅방을 지원하지 않습니다.)  
+2. **`headCount`** : 채팅방에 참여한 참여인원 목록을 보내주는 이벤트입니다. `{"채팅방#1": []}` 으로 해당 채팅방 참여 인원을 보내 줄 수 있습니다.  
+3. **`join | leave`** : 특정 채팅방에 참여하거나 벗어나는 이벤트입니다.  
+4. **`send`** : 서로간의 메시지를 전송하는 이벤트 입니다. (텍스트, base64 이미지)  
   
 ### 업데이트
 - 1.1.0
