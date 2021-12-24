@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ChatWindow from './talk/chatWindow';
 import Loading from './loading';
 import ChatEvents from './lib/chatEvents';
+import { RoomContext } from './store/roomContext';
 
 const WebChat = props => {
   const {
     socket
   } = props;
   const [step, setStep] = useState(0);
+  const [rooms, setRooms] = useState([]);
+  const {
+    handleRoom
+  } = useContext(RoomContext);
+  const Events = new ChatEvents(socket);
 
   const handleStep = step => {
     setStep(step);
   };
 
   useEffect(() => {
-    const Events = new ChatEvents(socket);
     Events.handleConnect(() => {
-      socket.emit('join', {
-        socketIdx: socket.id,
-        room: '#1'
-      });
-      handleStep(2);
+      Events.getRooms(setRooms);
     });
     Events.handleDisConnect(() => {
       handleStep(1);
@@ -32,6 +33,13 @@ const WebChat = props => {
       socket.close();
     };
   }, [socket]);
+  useEffect(() => {
+    if (rooms.length > 0) {
+      Events.joinRoom(rooms[0]);
+      handleRoom(rooms[0]);
+      handleStep(2);
+    }
+  }, [rooms]);
   return /*#__PURE__*/React.createElement("article", {
     style: {
       display: "flex",

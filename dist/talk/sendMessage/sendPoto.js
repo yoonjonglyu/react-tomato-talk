@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PotoIcon from '../../assets/poto.png';
 import ChatEvents from '../../lib/chatEvents';
+import { RoomContext } from '../../store/roomContext';
 
 const SendPoto = ({
   socket
 }) => {
+  const {
+    room
+  } = useContext(RoomContext);
+
   const handleFile = e => {
     const file = e.target.files;
 
     if (file !== null) {
       const Events = new ChatEvents(socket);
-      const result = Events.sendImage(file[0]);
+      const result = Events.sendImage(file[0], room);
 
       if (!result) {
         alert('이미지 파일이 아닙니다.');

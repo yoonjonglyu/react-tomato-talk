@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import SendPoto from './sendPoto';
 import ChatEvents from '../../lib/chatEvents';
+import { RoomContext } from '../../store/roomContext';
 
 const SendForm = props => {
   const {
     socket
   } = props;
   const [message, setMessage] = useState('');
+  const {
+    room
+  } = useContext(RoomContext);
 
   const sendMessage = e => {
     e.preventDefault();
 
     if (message.length > 0) {
       const Events = new ChatEvents(socket);
-      Events.sendMessage(message, '#1');
+      Events.sendMessage(message, room);
       setMessage('');
     }
   };
