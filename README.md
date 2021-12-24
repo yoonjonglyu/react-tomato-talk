@@ -9,7 +9,7 @@
 
 ## 데모 버전
 
-![토마토톡](./assets/chat.jpg)  
+![토마토톡](./assets/chat.png)  
 [토마토톡데모](https://yoonjonglyu.github.io/webChat/)
 
 **링크를 통해서 확인 가능한 데모 버전의 채팅창 부분을 모듈화한게 본 패키지입니다.**  
@@ -66,11 +66,10 @@ const io = new Server({
 });
 
 const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
-const roomList = ['채팅방#1', '#1'] // 채팅방 목록 현재는 첫번째 채팅방으로 자동으로 연결됩니다.
-const rooms = { // 각 채팅방 참가자 목록
-    "채팅방#1": [],
-    "#1": [],
-}; // 채팅방 선택 기능의 경우 벡엔드 서버의 roomList의 갯수가 1개 이상일때 자동으로 활성화 됩니다.
+const roomList = ['채팅방#1'] // 채팅방 목록 현재는 첫번째 채팅방으로 자동으로 연결됩니다.
+const rooms = { // 각 채팅방 참가자 목록 배열
+    "채팅방#1": []
+};
 io.on("connection", (client) => {
     client.on('rooms', () => { // 사용자가 요청하면 채팅방 목록을 전송
         io.emit('rooms', roomList);
