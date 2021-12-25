@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { ModalContext } from '../../store/modalContext';
 
 const ChatMessage = props => {
   const {
     messages,
     userId
   } = props;
+  const {
+    handleIsModal,
+    handleModal
+  } = useContext(ModalContext);
+
+  const openImageModal = src => {
+    handleModal( /*#__PURE__*/React.createElement("img", {
+      src: src,
+      style: {
+        maxWidth: "100%",
+        maxHeight: "100%"
+      }
+    }));
+    handleIsModal(true);
+  };
+
   return /*#__PURE__*/React.createElement(React.Fragment, null, messages.map((current, idx) => {
     const messageStyle = {
       maxWidth: "58%",
@@ -59,7 +76,8 @@ const ChatMessage = props => {
       style: messageStyle
     }, current.message) : /*#__PURE__*/React.createElement("img", {
       src: current.message.slice(5),
-      style: messageStyle
+      style: messageStyle,
+      onClick: () => openImageModal(current.message.slice(5))
     }), current.idx !== '#system' && /*#__PURE__*/React.createElement("time", {
       style: {
         display: "flex",

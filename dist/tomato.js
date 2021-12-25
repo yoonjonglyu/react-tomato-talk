@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import WebChat from './webChat';
 import RoomContextProvider from './store/roomContext';
+import ModalContextProvider from './store/modalContext';
 
 const TomatoTalk = props => {
   const {
@@ -13,9 +14,9 @@ const TomatoTalk = props => {
       transports: ['websocket']
     }));
   }, []);
-  return /*#__PURE__*/React.createElement(React.Fragment, null, socket !== null && /*#__PURE__*/React.createElement(RoomContextProvider, null, /*#__PURE__*/React.createElement(WebChat, {
+  return /*#__PURE__*/React.createElement(React.Fragment, null, socket !== null && /*#__PURE__*/React.createElement(ModalContextProvider, null, /*#__PURE__*/React.createElement(RoomContextProvider, null, /*#__PURE__*/React.createElement(WebChat, {
     socket: socket
-  })));
+  }))));
 };
 
 export default TomatoTalk;
