@@ -2,14 +2,17 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import ChatWindow from './talk/chatWindow';
 import Loading from './loading';
+import Modal from './modal';
 
 import ChatEvents from './lib/chatEvents';
 import { RoomContext } from './store/roomContext';
+import { ModalContext } from './store/modalContext';
 
 const WebChat = (props) => {
     const {
         socket
     } = props;
+    const { isModal } = useContext(ModalContext);
     const [step, setStep] = useState(0);
     const [rooms, setRooms] = useState([]);
     const { handleRoom } = useContext(RoomContext);
@@ -17,6 +20,7 @@ const WebChat = (props) => {
     const handleStep = (step) => {
         setStep(step);
     }
+    
     useEffect(() => {
         Events.handleConnect(() => {
             Events.getRooms(setRooms);
@@ -49,6 +53,10 @@ const WebChat = (props) => {
             border: "1px solid #678983",
         }}
         >
+            {
+                isModal &&
+                <Modal />
+            }
             {
                 step < 2 &&
                 <Loading state={step} />

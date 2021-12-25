@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { ModalContext } from '../../store/modalContext';
 
 const ChatMessage = (props) => {
     const {
         messages,
         userId
     } = props;
+    const { handleIsModal, handleModal } = useContext(ModalContext);
+
+    const openImageModal = (src) => {
+        handleModal(
+            <img
+                src={src}
+                style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%"
+                }}
+            />
+        );
+        handleIsModal(true);
+    }
 
     return (
         <>
@@ -74,6 +90,7 @@ const ChatMessage = (props) => {
                                         <img
                                             src={current.message.slice(5)}
                                             style={messageStyle}
+                                            onClick={() => openImageModal(current.message.slice(5))}
                                         />
                                 }
                                 {

@@ -4,17 +4,35 @@ import PotoIcon from '../../assets/poto.png';
 
 import ChatEvents from '../../lib/chatEvents';
 import { RoomContext } from '../../store/roomContext';
+import { ModalContext } from '../../store/modalContext';
 
 const SendPoto = ({ socket }) => {
     const { room } = useContext(RoomContext);
-    
+    const { handleIsModal, handleModal } = useContext(ModalContext);
+
+    const openModal = (message) => {
+        handleModal(
+            <h3
+                style={{
+                    width: "80%",
+                    margin: "0 auto",
+                    textAlign: "center",
+                    fontSize: "1rem",
+                    color: "rgb(94 22 22)",
+                }}
+            >
+                {message}
+            </h3>
+        );
+        handleIsModal(true);
+    }
     const handleFile = (e) => {
         const file = e.target.files;
         if (file !== null) {
             const Events = new ChatEvents(socket);
             const result = Events.sendImage(file[0], room);
             if (!result) {
-                alert('이미지 파일이 아닙니다.');
+                openModal('500kb 이하의 이미지 파일만 전송 할 수 있습니다.');
             }
         }
         e.target.value = '';
