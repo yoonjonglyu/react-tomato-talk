@@ -13,7 +13,8 @@
 [토마토톡데모](https://yoonjonglyu.github.io/webChat/)
 
 **링크를 통해서 확인 가능한 데모 버전의 채팅창 부분을 모듈화한게 본 패키지입니다.**  
-**데모 버전의 경우 개발 중인 기능이 포함 되어 있을 수 있으니 참고하시길 바랍니다.**  
+**데모 버전의 경우 개발 중인 기능이 포함 되어 있을 수 있으니 참고하시길 바랍니다.**
+**해당 데모는 Heroku 무료 호스팅을 이용중이므로 속도가 느립니다.**
 
 ## 설치
 
@@ -46,6 +47,7 @@ const App = function () {
             >
                 <ReactTomatoTalk
                     url={'http://localhost:3000/'} //소켓서버 url입니다.
+                    imageSize={5} // MB 단위 이미지 전송 사이즈 제한 기능. Props 안할 경우 기본값은 1MB다.
                 />
             </section>
         </main>
@@ -62,14 +64,16 @@ const App = function () {
 ```js
 const { Server } = require("socket.io"); // cors 설정 주의.
 const io = new Server({
-    transports: ["websocket"] // 현재는 웹소켓 방식만 지원해준다.
+    transports: ["websocket"], // 현재는 웹소켓 방식만 지원해준다.
+    maxHttpBufferSize: 5 * 1024 * 1024 // 단일 메시지 바이트수 제한 5(MB) * 1024 * 1024 = MB
 });
 
 const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
-const roomList = ['채팅방#1'] // 채팅방 목록 현재는 첫번째 채팅방으로 자동으로 연결됩니다.
-const rooms = { // 각 채팅방 참가자 목록 배열
-    "채팅방#1": []
-};
+const roomList = ['채팅방#1', '#1'] // 채팅방 목록 현재는 첫번째 채팅방으로 자동으로 연결됩니다.
+const rooms = { // 각 채팅방 참가자 목록
+    "채팅방#1": [],
+    "#1": [],
+}; // 채팅방 선택 기능의 경우 벡엔드 서버의 roomList의 갯수가 1개 이상일때 자동으로 활성화 됩니다.
 io.on("connection", (client) => {
     client.on('rooms', () => { // 사용자가 요청하면 채팅방 목록을 전송
         io.emit('rooms', roomList);
@@ -95,8 +99,14 @@ io.on("connection", (client) => {
             idx: data.socketIdx
         });
     });
+    client.on('sendImage', data => { // {socketIdx, message, room} 사용자가 전송한 이미지를 받아서 해당 채팅방에 전송 
+        io.to(data.room).emit('receiveImage', {
+            message: data.message,
+            idx: data.socketIdx
+        });
+    });
     client.on('disconnect', () => { // 연결해제시 채팅서버에 기록된 해당 유저의 채팅방에 이탈 메시지 전송
-        if(usrList[client.id]){
+        if (usrList[client.id]) {
             io.to(usrList[client.id]).emit('leaveRoom', client.id); // 대화이탈에 대한 메시지 전송
             rooms[usrList[client.id]] = rooms[usrList[client.id]].filter((el) => el !== client.id); // 해당 채팅방 참여 인원에서 제거
             delete usrList[client.id]; // 메모리에서 해당 유저의 데이터 삭제
@@ -110,6 +120,9 @@ io.listen(3000);
 ### Props
 
 1. **`url(string)`** : 소켓서버의 url입니다.  
+2. **`imageSize(number ?)`** : 이미지 전송 기능의 사이즈 제한입니다. 최소 단위는 MB(메가 바이트)이며 `기본 값은 1MB`입니다.  
+* 추가적으로 벡엔드의 소켓 이미지 제한을 조정하셔야 합니다.  
+
 
 ### 벡엔드 소켓 이벤트
 
@@ -144,6 +157,9 @@ io.listen(3000);
   - 이미지 전송 사이즈 제한 추가(500kb) *추후 커스텀 가능
   - 사진 전송 파일형식, 용량 제한 경고 모달 추가
   - 사진 확대 보기 추가
+- 1.4.4
+  - 이미지 전송 소켓 이벤트 분리 => 벡엔드 로직 추가 sendImages & receiveImage 이벤트
+  - 이미지 사이즈 제한 Props 추가 기본 값 1MB, 단위 MB
 
 ### LICENSE
 
