@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import ChatEvents from '../../lib/chatEvents';
-import { RoomContext } from '../../store/roomContext';
+import { ConfigContext } from '../../store/configContext';
 
 const ChatHead = (props) => {
     const {
         socket
     } = props;
     const [headCount, setHeadCount] = useState([]);
-    const { room } = useContext(RoomContext);
+    const { room } = useContext(ConfigContext);
 
     useEffect(() => {
         const Events = new ChatEvents(socket);

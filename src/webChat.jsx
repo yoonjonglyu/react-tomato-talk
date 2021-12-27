@@ -5,31 +5,34 @@ import Loading from './loading';
 import Modal from './modal';
 
 import ChatEvents from './lib/chatEvents';
-import { RoomContext } from './store/roomContext';
+import { ConfigContext } from './store/configContext';
 import { ModalContext } from './store/modalContext';
 
 const WebChat = (props) => {
     const {
-        socket
+        socket,
+        config
     } = props;
     const { isModal } = useContext(ModalContext);
+    const { handleRoom, handleImageSize } = useContext(ConfigContext);
+    useEffect(() => {
+        if(config?.imageSize){
+            handleImageSize(config.imageSize);
+        }
+    }, []);
+
+    const Events = new ChatEvents(socket);
     const [step, setStep] = useState(0);
     const [rooms, setRooms] = useState([]);
-    const { handleRoom } = useContext(RoomContext);
-    const Events = new ChatEvents(socket);
-    const handleStep = (step) => {
-        setStep(step);
-    }
-    
     useEffect(() => {
         Events.handleConnect(() => {
             Events.getRooms(setRooms);
         });
         Events.handleDisConnect(() => {
-            handleStep(1);
+            setStep(1);
         });
         Events.handleError(() => {
-            handleStep(1);
+            setStep(1);
         });
         return () => {
             socket.close();
@@ -39,7 +42,7 @@ const WebChat = (props) => {
         if (rooms.length > 0) {
             Events.joinRoom(rooms[0]);
             handleRoom(rooms[0]);
-            handleStep(2);
+            setStep(2);
         }
     }, [rooms]);
 

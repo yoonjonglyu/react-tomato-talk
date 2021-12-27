@@ -3,13 +3,12 @@ import React, { useContext } from 'react';
 import PotoIcon from '../../assets/poto.png';
 
 import ChatEvents from '../../lib/chatEvents';
-import { RoomContext } from '../../store/roomContext';
+import { ConfigContext } from '../../store/configContext';
 import { ModalContext } from '../../store/modalContext';
 
 const SendPoto = ({ socket }) => {
-    const { room } = useContext(RoomContext);
+    const { room, imageSize } = useContext(ConfigContext);
     const { handleIsModal, handleModal } = useContext(ModalContext);
-
     const openModal = (message) => {
         handleModal(
             <h3
@@ -30,9 +29,9 @@ const SendPoto = ({ socket }) => {
         const file = e.target.files;
         if (file !== null) {
             const Events = new ChatEvents(socket);
-            const result = Events.sendImage(file[0], room);
+            const result = Events.sendImage(file[0], room, imageSize);
             if (!result) {
-                openModal('500kb 이하의 이미지 파일만 전송 할 수 있습니다.');
+                openModal(`${imageSize / (1024 * 1024)}MB 이하의 이미지 파일만 전송 할 수 있습니다.`);
             }
         }
         e.target.value = '';

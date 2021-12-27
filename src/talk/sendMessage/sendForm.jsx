@@ -3,14 +3,14 @@ import React, { useState, useContext } from 'react';
 import SendPoto from './sendPoto';
 
 import ChatEvents from '../../lib/chatEvents';
-import { RoomContext } from '../../store/roomContext';
+import { ConfigContext } from '../../store/configContext';
 
 const SendForm = (props) => {
     const {
         socket
     } = props;
     const [message, setMessage] = useState('');
-    const { room } = useContext(RoomContext);
+    const { room } = useContext(ConfigContext);
     
     const sendMessage = (e) => {
         e.preventDefault();
