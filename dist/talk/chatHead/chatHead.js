@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import ChatEvents from '../../lib/chatEvents';
-import { RoomContext } from '../../store/roomContext';
+import { ConfigContext } from '../../store/configContext';
 
 const ChatHead = props => {
   const {
@@ -9,7 +9,7 @@ const ChatHead = props => {
   const [headCount, setHeadCount] = useState([]);
   const {
     room
-  } = useContext(RoomContext);
+  } = useContext(ConfigContext);
   useEffect(() => {
     const Events = new ChatEvents(socket);
     Events.getHeadCount(room, setHeadCount);

@@ -45,19 +45,13 @@ class ChatEvents {
     });
   }
 
-  sendImage(image, room) {
-    if (image.type.split('/')[0] === 'image') {
-      const reader = new FileReader();
-
-      reader.onload = e => {
-        this.socket.emit('send', {
-          socketIdx: this.socket.id,
-          message: `@$IMG ${e.target?.result}`,
-          room: room
-        });
-      };
-
-      reader.readAsDataURL(image);
+  sendImage(image, room, imgSize) {
+    if (image.type.split('/')[0] === 'image' && image.size <= imgSize) {
+      this.socket.emit('sendImage', {
+        socketIdx: this.socket.id,
+        message: image,
+        room: room
+      });
       return true;
     } else {
       return false;
@@ -65,6 +59,20 @@ class ChatEvents {
   }
 
   receiveMessages(handleMessage) {
+    this.socket.once('receiveImage', data => {
+      const reader = new FileReader();
+
+      reader.onload = e => {
+        handleMessage({
+          idx: data.idx,
+          message: `@$IMG ${e.target?.result}`
+        });
+      };
+
+      reader.readAsDataURL(new Blob([data.message], {
+        type: 'images/png'
+      }));
+    });
     this.socket.once('receive', data => {
       if (this.socket.connected) {
         handleMessage(data);
@@ -94,6 +102,7 @@ class ChatEvents {
     this.socket.removeAllListeners('receive');
     this.socket.removeAllListeners('joinRoom');
     this.socket.removeAllListeners('leaveRoom');
+    this.socket.removeAllListeners('receiveImage');
   }
 
   getHeadCount(room, handleCount) {
