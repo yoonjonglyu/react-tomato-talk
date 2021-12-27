@@ -3,15 +3,15 @@ import { io } from 'socket.io-client';
 
 import WebChat from './webChat';
 
-import RoomContextProvider from './store/roomContext';
-import ModalContextProvider from './store/modalContext';
+import RootContextProvider from './store';
 
 const TomatoTalk = (props) => {
     const {
-        url
+        url,
+        imageSize
     } = props;
     const [socket, setSocket] = useState(null);
-    
+
     useEffect(() => {
         setSocket(
             io(url,
@@ -26,11 +26,14 @@ const TomatoTalk = (props) => {
         <>
             {
                 socket !== null &&
-                <ModalContextProvider>
-                    <RoomContextProvider>
-                        <WebChat socket={socket} />
-                    </RoomContextProvider>
-                </ModalContextProvider>
+                <RootContextProvider>
+                    <WebChat
+                        socket={socket}
+                        config={{
+                            imageSize
+                        }}
+                    />
+                </RootContextProvider>
             }
         </>
     );
