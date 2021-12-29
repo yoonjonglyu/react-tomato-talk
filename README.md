@@ -58,8 +58,9 @@ const App = function () {
 ### 벡엔드
 
 >  
-> 해당 모듈을 위해서 현재 필요한 소켓 이벤트는 connection, join, send, leave, disconnect가 있다.  
-> 기능 추가에 따라서 벡엔드 로직이 추가되거나 일부 수정 될수 있으므로 업데이트시 확인바랍니다.
+> 해당 모듈을 위해서 현재 필요한 소켓 이벤트는 connection, rooms, headCount, join, send, sendImage, leave, disconnect가 있다.  
+> 기능 추가에 따라서 벡엔드 로직이 추가되거나 일부 수정 될수 있으므로 업데이트시 확인바랍니다.  
+> 
 
 ```js
 const { Server } = require("socket.io"); // cors 설정 주의.
