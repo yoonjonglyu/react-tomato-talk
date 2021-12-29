@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 
+import UserIcon from '../../assets/user.png';
+
 import ChatEvents from '../../lib/chatEvents';
 import { ConfigContext } from '../../store/configContext';
 
@@ -9,12 +11,53 @@ const ChatHead = (props) => {
     } = props;
     const [headCount, setHeadCount] = useState([]);
     const { room } = useContext(ConfigContext);
+    const { handleIsModal, handleModal } = useContext(ModalContext);
+    const headCountModal = () => {
+        handleModal(
+            <ul
+                style={{
+                    display: "flex",
+                    flexFlow: "column nowrap",
+                    flex: "1",
+                    margin: "0",
+                    padding: "0",
+                    listStyle: "none",
+                    overflow: "auto",
+                }}
+            >
+                {
+                    headCount.map((id, idx) =>
+                        <li
+                            key={idx}
+                            style={{
+                                margin: "8px",
+                                textAlign: "center",
+                                color: "#e4e2b0"
+                            }}
+                        >
+                            {idx + 1} : {id}
+                        </li>
+                    )
+                }
+            </ul>
+        );
+    }
+    const openUserList = () => {
+        headCountModal();
+        handleIsModal(true);
+    }
 
     useEffect(() => {
-        const Events = new ChatEvents(socket);
-        Events.getHeadCount(room, setHeadCount);
-        return () => Events.clearHeadCount();
-    });
+        if (room !== '') {
+            const Events = new ChatEvents(socket);
+            Events.getHeadCount(room, setHeadCount);
+        }
+    }, [room]);
+    useEffect(() => {
+        if (headCount.length > 0) {
+            headCountModal();
+        }
+    }, [headCount]);
 
     return (
         <div
@@ -31,6 +74,15 @@ const ChatHead = (props) => {
                     flex: "1"
                 }}
             >
+                <img
+                    src={UserIcon}
+                    style={{
+                        width: "30px",
+                        height: "30px",
+                        margin: "9px",
+                    }}
+                    onClick={openUserList}
+                />
                 <h2
                     style={{
                         margin: "12px",
