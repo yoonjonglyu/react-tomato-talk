@@ -9,7 +9,7 @@
 
 ## 데모 버전
 
-![토마토톡](./assets/chat.png)  
+![토마토톡](./assets/chat.gif)  
 [토마토톡데모](https://yoonjonglyu.github.io/webChat/)
 
 **링크를 통해서 확인 가능한 데모 버전의 채팅창 부분을 모듈화한게 본 패키지입니다.**  
