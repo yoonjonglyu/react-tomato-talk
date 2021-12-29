@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import UserIcon from '../../assets/user.png';
 import ChatEvents from '../../lib/chatEvents';
 import { ConfigContext } from '../../store/configContext';
+import { ModalContext } from '../../store/modalContext';
 
 const ChatHead = props => {
   const {
