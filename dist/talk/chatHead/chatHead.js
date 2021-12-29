@@ -76,7 +76,7 @@ const ChatHead = props => {
     onClick: openUserList
   }), /*#__PURE__*/React.createElement("h2", {
     style: {
-      margin: "12px",
+      margin: "12px 0",
       fontSize: "1rem",
       color: "rgb(103, 137, 131)"
     }
