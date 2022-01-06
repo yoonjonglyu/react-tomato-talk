@@ -70,7 +70,7 @@ const io = new Server({
 });
 
 const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
-const roomList = ['채팅방#1', '#1'] // 채팅방 목록 현재는 첫번째 채팅방으로 자동으로 연결됩니다.
+const roomList = ['채팅방#1', '#1'] // 채팅방 목록 길이가 2부터 채팅방 선택이 됩니다.
 const rooms = { // 각 채팅방 참가자 목록
     "채팅방#1": [],
     "#1": [],
@@ -83,13 +83,13 @@ io.on("connection", (client) => {
         io.emit('headCount', rooms);
     });
     client.on('join', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에 갈지를 받는다.
-        io.socketsJoin(data.room); // 해당 채팅방에 join
+        client.join(data.room); // 해당 채팅방에 join
         usrList[data.socketIdx] = data.room; // 해당 유저가 어느 방에 들어갔는지 기록
         rooms[data.room].push(data.socketIdx); // 해당 채팅방 참여인원에 추가
         io.to(data.room).emit('joinRoom', data.socketIdx); // 해당 채팅방에 대화참여 메시지 전송
     });
     client.on('leave', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에서 나올지를 받는다.
-        io.socketsLeave(data.room); // room에서 벗어난다.
+        client.leave(data.room); // room에서 벗어난다.
         delete usrList[data.socketIdx]; // 해당유저가 채팅방에서 벗어남을 기록
         rooms[data.room] = this.rooms[data.room].filter((el) => el !== data.socketIdx); // 해당 채팅방 참여 인원에서 제거
         io.to(data.room).emit('leaveRoom', data.socketIdx); // 대화 이탈 메시지 전송
@@ -164,6 +164,9 @@ io.listen(3000);
   - 이미지 사이즈 제한 Props 추가 기본 값 1MB, 단위 MB
 - 1.5.0
   - 채팅방 참여 인원 리스트 모달 추가
+- 1.6.0
+  - 채팅메시지 송수신 로직 개선 등 코드 리팩토링
+  - 채팅방 선택 기능 추가 (벡엔드 로직 join, leave 이벤트 일부 수정, 디자인 개선중)
 
 ### LICENSE
 
