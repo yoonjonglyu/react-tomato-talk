@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 
+import RoomList from './roomList';
 import ChatWindow from './talk/chatWindow';
 import Loading from './loading';
 import Modal from './modal';
@@ -16,7 +17,7 @@ const WebChat = (props) => {
     const { isModal } = useContext(ModalContext);
     const { handleRoom, handleImageSize } = useContext(ConfigContext);
     useEffect(() => {
-        if(config?.imageSize){
+        if (config?.imageSize) {
             handleImageSize(config.imageSize);
         }
     }, []);
@@ -40,9 +41,13 @@ const WebChat = (props) => {
     }, [socket]);
     useEffect(() => {
         if (rooms.length > 0) {
-            Events.joinRoom(rooms[0]);
-            handleRoom(rooms[0]);
-            setStep(2);
+            if (rooms.length === 1) {
+                Events.joinRoom(rooms[0]);
+                handleRoom(rooms[0]);
+                setStep(5);
+            } else {
+                setStep(3);
+            }
         }
     }, [rooms]);
 
@@ -63,6 +68,14 @@ const WebChat = (props) => {
             {
                 step < 2 &&
                 <Loading state={step} />
+            }
+            {
+                step === 3 &&
+                <RoomList
+                    rooms={rooms}
+                    socket={socket}
+                    handleStep={setStep}
+                />
             }
             <ChatWindow socket={socket} />
         </article >
