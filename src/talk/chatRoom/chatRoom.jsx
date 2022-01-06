@@ -18,19 +18,15 @@ const ChatRoom = (props) => {
         const Events = new ChatEvents(socket);
 
         Events.receiveMessages((msg) => {
-            setChatLog([
-                ...chatLog,
+            setChatLog((arr) => [
+                ...arr,
                 {
                     ...msg,
                     time: `${new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}`
                 }
             ]);
         });
-
-        return () => {
-            Events.clearReceive();
-        }
-    });
+    }, []);
     // 자기가 최신 메시지를 보낼때 자동 스크롤하기
     const Room = useRef(null);
     useEffect(() => {

@@ -52,7 +52,7 @@ class ChatEvents {
         }
     }
     receiveMessages(handleMessage) {
-        this.socket.once('receiveImage', (data) => {
+        this.socket.on('receiveImage', (data) => {
             const reader = new FileReader();
             reader.onload = (e) => {
                 handleMessage({
@@ -62,12 +62,12 @@ class ChatEvents {
             }
             reader.readAsDataURL(new Blob([data.message], { type: 'images/png' }));
         });
-        this.socket.once('receive', (data) => {
+        this.socket.on('receive', (data) => {
             if (this.socket.connected) {
                 handleMessage(data);
             }
         });
-        this.socket.once('joinRoom', (id) => {
+        this.socket.on('joinRoom', (id) => {
             if (this.socket.connected) {
                 handleMessage({
                     idx: '#system',
@@ -76,7 +76,7 @@ class ChatEvents {
                 this.socket.emit('headCount');
             }
         });
-        this.socket.once('leaveRoom', (id) => {
+        this.socket.on('leaveRoom', (id) => {
             if (this.socket.connected) {
                 handleMessage({
                     idx: '#system',
@@ -85,12 +85,6 @@ class ChatEvents {
                 this.socket.emit('headCount');
             }
         });
-    }
-    clearReceive() {
-        this.socket.removeAllListeners('receive');
-        this.socket.removeAllListeners('joinRoom');
-        this.socket.removeAllListeners('leaveRoom');
-        this.socket.removeAllListeners('receiveImage');
     }
     getHeadCount(room, handleCount) {
         this.socket.on('headCount', (data) => {
