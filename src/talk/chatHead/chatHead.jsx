@@ -11,8 +11,10 @@ const ChatHead = (props) => {
         socket
     } = props;
     const [headCount, setHeadCount] = useState([]);
-    const { room } = useContext(ConfigContext);
+    const { room, handleStep, handleRoom } = useContext(ConfigContext);
     const { handleIsModal, handleModal } = useContext(ModalContext);
+    const Events = new ChatEvents(socket);
+
     const headCountModal = () => {
         handleModal(
             <ul
@@ -47,11 +49,18 @@ const ChatHead = (props) => {
         headCountModal();
         handleIsModal(true);
     }
+    const leaveRoom = () => {
+        Events.leaveRoom(room);
+        handleRoom('');
+        handleStep(3);
+    }
 
     useEffect(() => {
         if (room !== '') {
-            const Events = new ChatEvents(socket);
-            Events.getHeadCount(room, setHeadCount);
+            Events.receiveHeadCount(room, setHeadCount);
+        }
+        return () => {
+            setHeadCount([]);
         }
     }, [room]);
     useEffect(() => {
@@ -111,6 +120,7 @@ const ChatHead = (props) => {
                     fontWeight: 600,
                     color: "#464545",
                 }}
+                onClick={leaveRoom}
             >
                 X
             </button>
