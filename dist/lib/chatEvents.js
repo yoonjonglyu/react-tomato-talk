@@ -37,6 +37,13 @@ class ChatEvents {
     });
   }
 
+  leaveRoom(room) {
+    this.socket.emit('leave', {
+      socketIdx: this.socket.id,
+      room: room
+    });
+  }
+
   sendMessage(message, room) {
     this.socket.emit('send', {
       socketIdx: this.socket.id,
@@ -84,7 +91,7 @@ class ChatEvents {
           idx: '#system',
           message: `${id} 님이 대화에 참여 하였습니다.`
         });
-        this.socket.emit('headCount');
+        this.getHeadCount();
       }
     });
     this.socket.on('leaveRoom', id => {
@@ -93,15 +100,27 @@ class ChatEvents {
           idx: '#system',
           message: `${id} 님이 대화에서 나갔습니다.`
         });
-        this.socket.emit('headCount');
+        this.getHeadCount();
       }
     });
   }
 
-  getHeadCount(room, handleCount) {
+  getHeadCount() {
+    this.socket.emit('headCount');
+  }
+
+  receiveHeadCount(room, handleCount) {
     this.socket.on('headCount', data => {
       if (this.socket.connected) {
         handleCount(data[room]);
+      }
+    });
+  }
+
+  receiveRoomHeadCount(handleCount) {
+    this.socket.on('headCount', data => {
+      if (this.socket.connected) {
+        handleCount(data);
       }
     });
   }

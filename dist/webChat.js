@@ -17,7 +17,9 @@ const WebChat = props => {
   } = useContext(ModalContext);
   const {
     handleRoom,
-    handleImageSize
+    handleImageSize,
+    step,
+    handleStep
   } = useContext(ConfigContext);
   useEffect(() => {
     if (config?.imageSize) {
@@ -25,17 +27,16 @@ const WebChat = props => {
     }
   }, []);
   const Events = new ChatEvents(socket);
-  const [step, setStep] = useState(0);
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
     Events.handleConnect(() => {
       Events.getRooms(setRooms);
     });
     Events.handleDisConnect(() => {
-      setStep(1);
+      handleStep(1);
     });
     Events.handleError(() => {
-      setStep(1);
+      handleStep(1);
     });
     return () => {
       socket.close();
@@ -46,9 +47,9 @@ const WebChat = props => {
       if (rooms.length === 1) {
         Events.joinRoom(rooms[0]);
         handleRoom(rooms[0]);
-        setStep(5);
+        handleStep(5);
       } else {
-        setStep(3);
+        handleStep(3);
       }
     }
   }, [rooms]);
@@ -65,9 +66,8 @@ const WebChat = props => {
     state: step
   }), step === 3 && /*#__PURE__*/React.createElement(RoomList, {
     rooms: rooms,
-    socket: socket,
-    handleStep: setStep
-  }), /*#__PURE__*/React.createElement(ChatWindow, {
+    socket: socket
+  }), step > 4 && /*#__PURE__*/React.createElement(ChatWindow, {
     socket: socket
   }));
 };

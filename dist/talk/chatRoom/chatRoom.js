@@ -9,9 +9,6 @@ const ChatRoom = props => {
   const [userId, setUserId] = useState('');
   const [chatLog, setChatLog] = useState([]);
   useEffect(() => {
-    setUserId(socket.id);
-  }, [chatLog]);
-  useEffect(() => {
     const Events = new ChatEvents(socket);
     Events.receiveMessages(msg => {
       setChatLog(arr => [...arr, { ...msg,
@@ -21,6 +18,11 @@ const ChatRoom = props => {
         })}`
       }]);
     });
+    setUserId(socket.id);
+    return () => {
+      setChatLog([]);
+      setUserId('');
+    };
   }, []); // 자기가 최신 메시지를 보낼때 자동 스크롤하기
 
   const Room = useRef(null);

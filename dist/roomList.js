@@ -1,17 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Socket } from 'socket.io-client';
 import ChatEvents from './lib/chatEvents';
 import { ConfigContext } from './store/configContext';
 
 const RoomList = ({
   rooms,
-  socket,
-  handleStep
+  socket
 }) => {
+  const [headCount, setHeadCount] = useState({});
   const {
-    handleRoom
+    handleRoom,
+    handleStep
   } = useContext(ConfigContext);
   const Events = new ChatEvents(socket);
+  useEffect(() => {
+    Events.receiveRoomHeadCount(setHeadCount);
+    const healthCheck = setInterval(() => Events.getHeadCount(), 1000);
+    return () => {
+      clearInterval(healthCheck);
+      setHeadCount({});
+    };
+  }, []);
 
   const joinRoom = room => {
     Events.joinRoom(room);
@@ -47,7 +56,7 @@ const RoomList = ({
       fontSize: "1.1rem",
       color: "whitesmoke"
     }
-  }, room))));
+  }, room, " (", headCount[room]?.length || 0, ")"))));
 };
 
 export default RoomList;
