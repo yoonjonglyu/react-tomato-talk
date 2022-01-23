@@ -19,7 +19,8 @@ const Modal = () => {
       justifyContent: "center",
       width: "100%",
       height: "100%",
-      background: "rgb(0,0,0, 0.5)"
+      background: "rgb(0,0,0, 0.5)",
+      zIndex: 99999999
     },
     onClick: closeModal
   }, /*#__PURE__*/React.createElement("div", {
