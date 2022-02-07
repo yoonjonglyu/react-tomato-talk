@@ -34,10 +34,11 @@ const SendPoto = ({
 
     if (file !== null) {
       const Events = new ChatEvents(socket);
-      const result = Events.sendImage(file[0], room, imageSize);
+      const mb = 1024 * 1024;
+      const result = Events.sendImage(file[0], room, imageSize * mb);
 
       if (!result) {
-        openModal(`${imageSize / (1024 * 1024)}MB 이하의 이미지 파일만 전송 할 수 있습니다.`);
+        openModal(`${imageSize}MB 이하의 이미지 파일만 전송 할 수 있습니다.`);
       }
     }
 

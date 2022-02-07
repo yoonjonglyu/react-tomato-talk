@@ -4,7 +4,7 @@ export const ConfigContext = /*#__PURE__*/createContext({
   handleStep: step => {},
   room: "",
   handleRoom: room => {},
-  imageSize: 1 * 1024 * 1024,
+  imageSize: 1,
   handleImageSize: imgsize => {}
 });
 
@@ -19,10 +19,10 @@ const ConfigContextProvider = ({
 
   const handleRoom = room => setRoom(room);
 
-  const [imageSize, setImageSize] = useState(1 * 1024 * 1024);
+  const [imageSize, setImageSize] = useState(1);
 
   const handleImageSize = imgsize => {
-    if (imageSize > 0) setImageSize(Math.floor(imgsize * 1024 * 1024));
+    if (imageSize > 0) setImageSize(imgsize);
   };
 
   return /*#__PURE__*/React.createElement(ConfigContext.Provider, {
