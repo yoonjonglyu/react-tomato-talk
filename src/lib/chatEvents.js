@@ -1,7 +1,9 @@
 class ChatEvents {
-    constructor(socket) {
+    constructor(socket, cryptoKey) {
         this.socket = socket;
+        this.cryptoKey = cryptoKey || '';
     }
+
     handleConnect(cb) {
         this.socket.on('connect', () => {
             if (this.socket.connected) {
@@ -19,6 +21,7 @@ class ChatEvents {
             cb();
         });
     }
+
     getRooms(handleRooms) {
         this.socket.once('rooms', (data) => {
             handleRooms(data);
@@ -37,8 +40,9 @@ class ChatEvents {
             room: room
         });
     }
+
     sendMessage(message, room) {
-        this.socket.emit('send', {
+        this.emit('send', {
             socketIdx: this.socket.id,
             message: message,
             room: room
@@ -68,7 +72,7 @@ class ChatEvents {
             }
             reader.readAsDataURL(new Blob([data.message], { type: 'images/png' }));
         });
-        this.socket.on('receive', (data) => {
+        this.on('receive', (data) => {
             if (this.socket.connected) {
                 handleMessage(data);
             }
@@ -92,6 +96,7 @@ class ChatEvents {
             }
         });
     }
+
     getHeadCount() {
         this.socket.emit('headCount');
     }
@@ -108,6 +113,25 @@ class ChatEvents {
                 handleCount(data);
             }
         });
+    }
+
+    emit(eventName, message) {
+        this.socket.emit(
+            eventName,
+            this.cryptoKey.length > 0 ?
+                Crypto.AES.encrypt(JSON.stringify(message), this.cryptoKey).toString() :
+                message
+        );
+    }
+    on(eventName, cb) {
+        this.socket.on(
+            eventName,
+            this.cryptoKey.length > 0 ?
+                (data) => cb(JSON.parse(
+                    Crypto.AES.decrypt(data, this.cryptoKey).toString(Crypto.enc.Utf8)
+                )) :
+                cb
+        )
     }
 }
 
