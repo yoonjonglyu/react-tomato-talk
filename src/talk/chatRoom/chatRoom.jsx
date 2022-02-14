@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import ChatMessage from './chatMessage';
 
 import ChatEvents from '../../lib/chatEvents';
-import { ConfigContext } from '../../store/ConfigContext';
+import { ConfigContext } from '../../store/configContext';
 
 const ChatRoom = (props) => {
     const {
