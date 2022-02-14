@@ -6,6 +6,7 @@ declare module 'react-tomato-talk' {
     interface ReactTomatoTalkProps {
         url: string
         imageSize?: number
+        secretKey?: string
     }
 
     export default ReactTomatoTalk;

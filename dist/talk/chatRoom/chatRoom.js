@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import ChatMessage from './chatMessage';
 import ChatEvents from '../../lib/chatEvents';
-import { ModalContext } from '../../store/modalContext';
+import { ConfigContext } from '../../store/ConfigContext';
 
 const ChatRoom = props => {
   const {
