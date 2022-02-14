@@ -7,6 +7,8 @@ export const ConfigContext = createContext({
     handleRoom: (room) => { },
     imageSize: 1,
     handleImageSize: (imgsize) => { },
+    secretKey: '',
+    handleSecretKey: (secretKey) => { },
 });
 
 const ConfigContextProvider = ({ children }) => {
@@ -18,6 +20,10 @@ const ConfigContextProvider = ({ children }) => {
     const handleImageSize = (imgsize) => {
         if (imageSize > 0) setImageSize(imgsize);
     }
+    const [secretKey, setSecretKey] = useState('');
+    const handleSecretKey = (secretKey) => {
+        if (secretKey.length > 0) setSecretKey(secretKey);
+    }
 
     return (
         <ConfigContext.Provider
@@ -27,7 +33,9 @@ const ConfigContextProvider = ({ children }) => {
                 room,
                 handleRoom,
                 imageSize,
-                handleImageSize
+                handleImageSize,
+                secretKey,
+                handleSecretKey,
             }}
         >
             {children}
