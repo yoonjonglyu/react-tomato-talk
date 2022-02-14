@@ -48,6 +48,7 @@ const App = function () {
                 <ReactTomatoTalk
                     url={'http://localhost:3000/'} //소켓서버 url입니다.
                     imageSize={5} // MB 단위 이미지 전송 사이즈 제한 기능. Props 안할 경우 기본값은 1MB다.
+                    secretKey='시크릿 키' // 메시지 전송 양방향 암호화 config 미입력시 암호화하지 않는다.
                 />
             </section>
         </main>
@@ -64,6 +65,7 @@ const App = function () {
 
 ```js
 const { Server } = require("socket.io"); // cors 설정 주의.
+const CryptoJS = require("crypto-js"); // 메시지 양방향 암호화 관련  crypto-js 적용
 const io = new Server({
     transports: ["websocket"], // 현재는 웹소켓 방식만 지원해준다.
     maxHttpBufferSize: 5 * 1024 * 1024 // 단일 메시지 바이트수 제한 5(MB) * 1024 * 1024 = MB
@@ -95,6 +97,15 @@ io.on("connection", (client) => {
         io.to(data.room).emit('leaveRoom', data.socketIdx); // 대화 이탈 메시지 전송
     });
     client.on('send', data => { // {message, socketIdx, room} 사용자가 보낸 메시지를 받아서 해당 채팅방에 전송
+        //  현재는 채팅 메시지에 대한 암호화만 제공 한다.
+        data = JSON.parse(CryptoJS.AES.decrypt(data, '시크릿 키').toString(CryptoJS.enc.Utf8)); // 양방향 암호화 사용시 처리
+        // 암호화 사용시
+        io.to(data.room).emit('receive', CryptoJS.AES.encrypt(JSON.stringify({
+            message: data.message,
+            idx: data.socketIdx
+        }), '시크릿 키').toString());
+
+        // 암호화 미사용시
         io.to(data.room).emit('receive', {
             message: data.message,
             idx: data.socketIdx
@@ -123,6 +134,7 @@ io.listen(3000);
 1. **`url(string)`** : 소켓서버의 url입니다.  
 2. **`imageSize(number ?)`** : 이미지 전송 기능의 사이즈 제한입니다. 최소 단위는 MB(메가 바이트)이며 `기본 값은 1MB`입니다.    
 * 추가적으로 벡엔드의 소켓 이미지 제한을 조정하셔야 합니다.  
+3. **`secretKey(string ?)`** : 채팅 메시지 양방향 암호화 시크릿키입니다. 임의의 문자열을 입력해주시면 양방향 암호화를 적용 할 수 있습니다.
 
 
 ### 벡엔드 소켓 이벤트
@@ -173,6 +185,8 @@ io.listen(3000);
 - 1.6.4
   - 전송된 이미지 다운로드 기능 추가
   - 이미지 hover시 이미지 상단에 Download 버튼 출현으로 다운로드 가능
+- 1.6.6
+  - 메시지 전송 관한 양방향 암호화 설정 가능.(현재는 단순 채팅 메시지만 적용)  
 
 ### LICENSE
 
