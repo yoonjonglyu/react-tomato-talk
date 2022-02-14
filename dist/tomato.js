@@ -6,7 +6,8 @@ import RootContextProvider from './store';
 const TomatoTalk = props => {
   const {
     url,
-    imageSize
+    imageSize,
+    secretKey
   } = props;
   const [socket, setSocket] = useState(null);
   useEffect(() => {
@@ -17,7 +18,8 @@ const TomatoTalk = props => {
   return /*#__PURE__*/React.createElement(React.Fragment, null, socket !== null && /*#__PURE__*/React.createElement(RootContextProvider, null, /*#__PURE__*/React.createElement(WebChat, {
     socket: socket,
     config: {
-      imageSize
+      imageSize,
+      secretKey
     }
   })));
 };

@@ -18,13 +18,13 @@ const WebChat = props => {
   const {
     handleRoom,
     handleImageSize,
+    handleSecretKey,
     step,
     handleStep
   } = useContext(ConfigContext);
   useEffect(() => {
-    if (config?.imageSize) {
-      handleImageSize(config.imageSize);
-    }
+    if (config?.imageSize) handleImageSize(config.imageSize);
+    if (config?.secretKey) handleSecretKey(config.secretKey);
   }, []);
   const Events = new ChatEvents(socket);
   const [rooms, setRooms] = useState([]);

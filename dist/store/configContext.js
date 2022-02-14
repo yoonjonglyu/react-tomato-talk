@@ -5,7 +5,9 @@ export const ConfigContext = /*#__PURE__*/createContext({
   room: "",
   handleRoom: room => {},
   imageSize: 1,
-  handleImageSize: imgsize => {}
+  handleImageSize: imgsize => {},
+  secretKey: '',
+  handleSecretKey: secretKey => {}
 });
 
 const ConfigContextProvider = ({
@@ -25,6 +27,12 @@ const ConfigContextProvider = ({
     if (imageSize > 0) setImageSize(imgsize);
   };
 
+  const [secretKey, setSecretKey] = useState('');
+
+  const handleSecretKey = secretKey => {
+    if (secretKey.length > 0) setSecretKey(secretKey);
+  };
+
   return /*#__PURE__*/React.createElement(ConfigContext.Provider, {
     value: {
       step,
@@ -32,7 +40,9 @@ const ConfigContextProvider = ({
       room,
       handleRoom,
       imageSize,
-      handleImageSize
+      handleImageSize,
+      secretKey,
+      handleSecretKey
     }
   }, children);
 };

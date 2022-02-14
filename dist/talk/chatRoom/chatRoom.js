@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import ChatMessage from './chatMessage';
 import ChatEvents from '../../lib/chatEvents';
+import { ModalContext } from '../../store/modalContext';
 
 const ChatRoom = props => {
   const {
@@ -8,8 +9,11 @@ const ChatRoom = props => {
   } = props;
   const [userId, setUserId] = useState('');
   const [chatLog, setChatLog] = useState([]);
+  const {
+    secretKey
+  } = useContext(ConfigContext);
   useEffect(() => {
-    const Events = new ChatEvents(socket);
+    const Events = new ChatEvents(socket, secretKey);
     Events.receiveMessages(msg => {
       setChatLog(arr => [...arr, { ...msg,
         time: `${new Date().toLocaleTimeString('ko-KR', {
