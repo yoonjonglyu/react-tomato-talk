@@ -1,3 +1,5 @@
+import Crypto from "crypto-js";
+
 class ChatEvents {
   constructor(socket, cryptoKey) {
     this.socket = socket;
