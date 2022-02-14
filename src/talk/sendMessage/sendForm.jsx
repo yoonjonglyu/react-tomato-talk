@@ -10,12 +10,12 @@ const SendForm = (props) => {
         socket
     } = props;
     const [message, setMessage] = useState('');
-    const { room } = useContext(ConfigContext);
+    const { room, secretKey } = useContext(ConfigContext);
     
     const sendMessage = (e) => {
         e.preventDefault();
         if (message.length > 0) {
-            const Events = new ChatEvents(socket);
+            const Events = new ChatEvents(socket, secretKey);
             Events.sendMessage(message, room);
             setMessage('');
         }

@@ -8,7 +8,8 @@ import RootContextProvider from './store';
 const TomatoTalk = (props) => {
     const {
         url,
-        imageSize
+        imageSize,
+        secretKey,
     } = props;
     const [socket, setSocket] = useState(null);
 
@@ -30,7 +31,8 @@ const TomatoTalk = (props) => {
                     <WebChat
                         socket={socket}
                         config={{
-                            imageSize
+                            imageSize,
+                            secretKey,
                         }}
                     />
                 </RootContextProvider>

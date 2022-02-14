@@ -15,11 +15,10 @@ const WebChat = (props) => {
         config
     } = props;
     const { isModal } = useContext(ModalContext);
-    const { handleRoom, handleImageSize, step, handleStep } = useContext(ConfigContext);
+    const { handleRoom, handleImageSize, handleSecretKey, step, handleStep } = useContext(ConfigContext);
     useEffect(() => {
-        if (config?.imageSize) {
-            handleImageSize(config.imageSize);
-        }
+        if (config?.imageSize) handleImageSize(config.imageSize);
+        if (config?.secretKey) handleSecretKey(config.secretKey);
     }, []);
 
     const Events = new ChatEvents(socket);
