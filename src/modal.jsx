@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
-import { ModalContext } from './store/modalContext';
+import { StoreContext } from './store/configureStore';
 
 const Modal = () => {
-    const { handleIsModal, modalContents } = useContext(ModalContext);
+    const { handleIsModal, modalContents } = useContext(StoreContext);
     const closeModal = () => {
         handleIsModal(false);
     }

@@ -3,14 +3,17 @@ import React, { useContext } from 'react';
 import PotoIcon from '../../assets/poto.png';
 
 import ChatEvents from '../../lib/chatEvents';
-import { ConfigContext } from '../../store/configContext';
-import { ModalContext } from '../../store/modalContext';
+import { StoreContext } from '../../store/configureStore';
 
 const SendPoto = ({ socket }) => {
-    const { room, imageSize } = useContext(ConfigContext);
-    const { handleIsModal, handleModal } = useContext(ModalContext);
+    const {
+        room,
+        imageSize,
+        handleIsModal,
+        handleModalContents
+    } = useContext(StoreContext);
     const openModal = (message) => {
-        handleModal(
+        handleModalContents(
             <h3
                 style={{
                     width: "80%",

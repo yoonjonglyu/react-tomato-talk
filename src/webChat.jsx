@@ -6,16 +6,21 @@ import Loading from './loading';
 import Modal from './modal';
 
 import ChatEvents from './lib/chatEvents';
-import { ConfigContext } from './store/configContext';
-import { ModalContext } from './store/modalContext';
+import { StoreContext } from './store/configureStore';
 
 const WebChat = (props) => {
     const {
         socket,
         config
     } = props;
-    const { isModal } = useContext(ModalContext);
-    const { handleRoom, handleImageSize, handleSecretKey, step, handleStep } = useContext(ConfigContext);
+    const {
+        handleRoom,
+        handleImageSize,
+        handleSecretKey,
+        step,
+        handleStep,
+        isModal
+    } = useContext(StoreContext);
     useEffect(() => {
         if (config?.imageSize) handleImageSize(config.imageSize);
         if (config?.secretKey) handleSecretKey(config.secretKey);

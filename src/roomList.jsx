@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Socket } from 'socket.io-client';
 
 import ChatEvents from './lib/chatEvents';
-import { ConfigContext } from './store/configContext';
+import { StoreContext } from './store/configureStore';
 
 
 const RoomList = ({ rooms, socket }) => {
     const [headCount, setHeadCount] = useState({});
-    const { handleRoom, handleStep } = useContext(ConfigContext);
+    const { handleRoom, handleStep } = useContext(StoreContext);
     const Events = new ChatEvents(socket);
 
     useEffect(() => {

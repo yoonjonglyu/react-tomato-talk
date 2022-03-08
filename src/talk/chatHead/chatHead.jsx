@@ -3,20 +3,24 @@ import React, { useEffect, useState, useContext } from 'react';
 import UserIcon from '../../assets/user.png';
 
 import ChatEvents from '../../lib/chatEvents';
-import { ConfigContext } from '../../store/configContext';
-import { ModalContext } from '../../store/modalContext';
+import { StoreContext } from '../../store/configureStore';
 
 const ChatHead = (props) => {
     const {
         socket
     } = props;
     const [headCount, setHeadCount] = useState([]);
-    const { room, handleStep, handleRoom } = useContext(ConfigContext);
-    const { handleIsModal, handleModal } = useContext(ModalContext);
+    const {
+        handleIsModal,
+        handleModalContents,
+        room,
+        handleStep,
+        handleRoom
+    } = useContext(StoreContext);
     const Events = new ChatEvents(socket);
 
     const headCountModal = () => {
-        handleModal(
+        handleModalContents(
             <ul
                 style={{
                     display: "flex",
