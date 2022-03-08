@@ -1,6 +1,6 @@
 {
   "name": "react-tomato-talk",
-  "version": "1.6.11",
+  "version": "1.6.12",
   "description": "리액트 오픈채팅 모듈, 익명, 오픈채팅을 제공한다.",
   "main": "dist/index.js",
   "module": "dist/index.js",
