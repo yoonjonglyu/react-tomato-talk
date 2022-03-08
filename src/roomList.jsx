@@ -40,11 +40,21 @@ const RoomList = ({ rooms, socket }) => {
                 textAlign: "center",
             }}
         >
-            <h2>참여 가능한 채팅방 목록</h2>
+            <h2
+                style={{
+                    padding: "8px",
+                    fontSize: "1.5rem",
+                    color: "#325332"
+                }}
+            >
+                참여 가능한 채팅방 목록
+            </h2>
             <ul
                 data-testid="rooms"
                 style={{
-                    margin: "0",
+                    width: "100%",
+                    maxWidth: "500px",
+                    margin: "33px auto",
                     padding: 0,
                     listStyle: "none",
                 }}
@@ -55,10 +65,14 @@ const RoomList = ({ rooms, socket }) => {
                             key={idx}
                             onClick={() => joinRoom(room)}
                             style={{
-                                margin: "12px",
+                                margin: "16px",
+                                padding: "16px",
                                 fontSize: "1.1rem",
                                 color: "whitesmoke",
+                                border: "1px solid #fff"
                             }}
+                            onMouseOver={(e) => e.target.style.color = '#dc1f1f'}
+                            onMouseLeave={(e) => e.target.style.color = 'whitesmoke'}
                         >
                             {room} ({headCount[room]?.length || 0})
                         </li>)

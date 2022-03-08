@@ -37,9 +37,11 @@ const ChatHead = (props) => {
                         <li
                             key={idx}
                             style={{
-                                margin: "8px",
+                                margin: "12px",
+                                padding: "8px",
                                 textAlign: "center",
-                                color: "#e4e2b0"
+                                color: "#e4e2b0",
+                                border: "1px solid #969595"
                             }}
                         >
                             {idx + 1} : {id}
