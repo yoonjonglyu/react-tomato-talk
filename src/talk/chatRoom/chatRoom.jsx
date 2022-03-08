@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import ChatMessage from './chatMessage';
 
 import ChatEvents from '../../lib/chatEvents';
-import { ConfigContext } from '../../store/configContext';
+import { StoreContext } from '../../store/configureStore';
 
 const ChatRoom = (props) => {
     const {
@@ -11,7 +11,7 @@ const ChatRoom = (props) => {
     } = props;
     const [userId, setUserId] = useState('');
     const [chatLog, setChatLog] = useState([]);
-    const { secretKey } = useContext(ConfigContext);
+    const { secretKey } = useContext(StoreContext);
 
     useEffect(() => {
         const Events = new ChatEvents(socket, secretKey);

@@ -4,17 +4,17 @@ import SystemMessage from './systemMessage';
 import PartnerMessage from './partnerMessage';
 import UserMessage from './userMessage';
 
-import { ModalContext } from '../../store/modalContext';
+import { StoreContext } from '../../store/configureStore';
 
 const ChatMessage = (props) => {
     const {
         messages,
         userId
     } = props;
-    const { handleIsModal, handleModal } = useContext(ModalContext);
+    const { handleIsModal, handleModalContents } = useContext(StoreContext);
 
     const openImageModal = (src) => {
-        handleModal(
+        handleModalContents(
             <img
                 src={src}
                 style={{
