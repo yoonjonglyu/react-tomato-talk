@@ -1,15 +1,12 @@
 import React from 'react';
 
-import ModalContextProvider from './modalContext';
-import ConfigContextProvider from './configContext';
+import ConfigureStoreProvider from './configureStore';
 
 const RootContextProvider = ({ children }) => {
     return (
-        <ConfigContextProvider>
-            <ModalContextProvider>
-                {children}
-            </ModalContextProvider>
-        </ConfigContextProvider>
+        <ConfigureStoreProvider>
+            {children}
+        </ConfigureStoreProvider>
     );
 };
 
