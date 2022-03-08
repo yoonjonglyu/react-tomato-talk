@@ -40,10 +40,18 @@ const RoomList = ({
       overflow: "auto",
       textAlign: "center"
     }
-  }, /*#__PURE__*/React.createElement("h2", null, "\uCC38\uC5EC \uAC00\uB2A5\uD55C \uCC44\uD305\uBC29 \uBAA9\uB85D"), /*#__PURE__*/React.createElement("ul", {
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: {
+      padding: "8px",
+      fontSize: "1.5rem",
+      color: "#325332"
+    }
+  }, "\uCC38\uC5EC \uAC00\uB2A5\uD55C \uCC44\uD305\uBC29 \uBAA9\uB85D"), /*#__PURE__*/React.createElement("ul", {
     "data-testid": "rooms",
     style: {
-      margin: "0",
+      width: "100%",
+      maxWidth: "500px",
+      margin: "33px auto",
       padding: 0,
       listStyle: "none"
     }
@@ -51,10 +59,14 @@ const RoomList = ({
     key: idx,
     onClick: () => joinRoom(room),
     style: {
-      margin: "12px",
+      margin: "16px",
+      padding: "16px",
       fontSize: "1.1rem",
-      color: "whitesmoke"
-    }
+      color: "whitesmoke",
+      border: "1px solid #fff"
+    },
+    onMouseOver: e => e.target.style.color = '#dc1f1f',
+    onMouseLeave: e => e.target.style.color = 'whitesmoke'
   }, room, " (", headCount[room]?.length || 0, ")"))));
 };
 
