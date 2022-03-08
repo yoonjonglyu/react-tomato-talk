@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import SendPoto from './sendPoto';
 import ChatEvents from '../../lib/chatEvents';
-import { ConfigContext } from '../../store/configContext';
+import { StoreContext } from '../../store/configureStore';
 
 const SendForm = props => {
   const {
@@ -11,7 +11,7 @@ const SendForm = props => {
   const {
     room,
     secretKey
-  } = useContext(ConfigContext);
+  } = useContext(StoreContext);
 
   const sendMessage = e => {
     e.preventDefault();

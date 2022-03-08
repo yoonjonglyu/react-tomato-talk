@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import UserIcon from '../../assets/user.png';
 import ChatEvents from '../../lib/chatEvents';
-import { ConfigContext } from '../../store/configContext';
-import { ModalContext } from '../../store/modalContext';
+import { StoreContext } from '../../store/configureStore';
 
 const ChatHead = props => {
   const {
@@ -10,18 +9,16 @@ const ChatHead = props => {
   } = props;
   const [headCount, setHeadCount] = useState([]);
   const {
+    handleIsModal,
+    handleModalContents,
     room,
     handleStep,
     handleRoom
-  } = useContext(ConfigContext);
-  const {
-    handleIsModal,
-    handleModal
-  } = useContext(ModalContext);
+  } = useContext(StoreContext);
   const Events = new ChatEvents(socket);
 
   const headCountModal = () => {
-    handleModal( /*#__PURE__*/React.createElement("ul", {
+    handleModalContents( /*#__PURE__*/React.createElement("ul", {
       style: {
         display: "flex",
         flexFlow: "column nowrap",

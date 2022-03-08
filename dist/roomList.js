@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Socket } from 'socket.io-client';
 import ChatEvents from './lib/chatEvents';
-import { ConfigContext } from './store/configContext';
+import { StoreContext } from './store/configureStore';
 
 const RoomList = ({
   rooms,
@@ -11,7 +10,7 @@ const RoomList = ({
   const {
     handleRoom,
     handleStep
-  } = useContext(ConfigContext);
+  } = useContext(StoreContext);
   const Events = new ChatEvents(socket);
   useEffect(() => {
     Events.receiveRoomHeadCount(setHeadCount);
