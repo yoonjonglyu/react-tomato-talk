@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import SystemMessage from './systemMessage';
 import PartnerMessage from './partnerMessage';
 import UserMessage from './userMessage';
-import { ModalContext } from '../../store/modalContext';
+import { StoreContext } from '../../store/configureStore';
 
 const ChatMessage = props => {
   const {
@@ -11,11 +11,11 @@ const ChatMessage = props => {
   } = props;
   const {
     handleIsModal,
-    handleModal
-  } = useContext(ModalContext);
+    handleModalContents
+  } = useContext(StoreContext);
 
   const openImageModal = src => {
-    handleModal( /*#__PURE__*/React.createElement("img", {
+    handleModalContents( /*#__PURE__*/React.createElement("img", {
       src: src,
       style: {
         maxWidth: "100%",
