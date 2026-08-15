@@ -1,3 +1,5 @@
+
+
 # react-tomato-talk
 
 `react`와 `socket.io`, `socket.io-client`을 통해서 만든 익명 채팅 모듈입니다.  
@@ -19,7 +21,7 @@
 ## 설치
 
 ```bash
-npm npm i react-tomato-talk
+npm i react-tomato-talk
 //or
 yarn add react-tomato-talk
 ```
