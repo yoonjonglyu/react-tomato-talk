@@ -1,54 +1,18 @@
 {
-  "name": "react-tomato-talk",
-  "version": "1.6.13",
-  "description": "리액트 오픈채팅 모듈, 익명, 오픈채팅을 제공한다.",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "react-tomato-talk-monorepo",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Monorepo for react-tomato-talk (Anonymous, Group, Direct, Random Chat SDK & Server)",
   "scripts": {
-    "publish:npm": "rm -rf dist && mkdir dist && babel src -d dist --copy-files"
+    "build": "pnpm --filter react-tomato-talk build",
+    "build:server": "pnpm --filter @tomato-talk/server build",
+    "build:all": "pnpm -r build",
+    "dev:server": "pnpm --filter @tomato-talk/server dev",
+    "dev:playground": "pnpm --filter playground dev",
+    "start:server": "pnpm --filter @tomato-talk/server start",
+    "typecheck": "pnpm -r typecheck"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yoonjonglyu/react-tomato-talk.git"
-  },
-  "keywords": [
-    "react",
-    "soket.io",
-    "chatting",
-    "채팅",
-    "오픈채팅",
-    "tomato",
-    "익명채팅",
-    "tomatoTalk",
-    "talk",
-    "reacttomato",
-    "reactchat"
-  ],
-  "files": [
-    "dist"
-  ],
-  "author": {
-    "name": "ISA",
-    "email": "yunjonglyu@gmail.com",
-    "url": "https://isa-dev.tistory.com/"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yoonjonglyu/react-tomato-talk/issues"
-  },
-  "homepage": "https://github.com/yoonjonglyu/react-tomato-talk#readme",
-  "babel": {
-    "presets": [
-      "@babel/preset-react"
-    ]
-  },
-  "dependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.5",
-    "@babel/preset-react": "^7.16.0",
-    "crypto-js": "^4.1.1",
-    "react": "^17.0.2",
-    "socket.io-client": "^4.4.0"
+  "devDependencies": {
+    "typescript": "^5.8.2"
   }
 }

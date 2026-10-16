@@ -1,0 +1,64 @@
+{
+  "name": "react-tomato-talk",
+  "version": "2.0.0",
+  "description": "모던 리액트 실시간 채팅 SDK & UI 키트: 익명채팅, 그룹채팅, 1:1 개인채팅, 랜덤채팅 지원",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./styles/tomato.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "skills"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "react",
+    "socket.io",
+    "chat",
+    "anonymous-chat",
+    "group-chat",
+    "direct-chat",
+    "random-chat",
+    "tomato-talk",
+    "채팅",
+    "랜덤채팅",
+    "그룹채팅",
+    "익명채팅",
+    "1대1채팅"
+  ],
+  "author": {
+    "name": "ISA",
+    "email": "yunjonglyu@gmail.com",
+    "url": "https://isa-dev.tistory.com/"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": ">=16.8.0 || ^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0",
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2"
+  }
+}

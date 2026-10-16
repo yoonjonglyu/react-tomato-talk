@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: tomato-talk-server
+    env: docker
+    dockerfilePath: packages/server/Dockerfile
+    plan: free
+    region: singapore
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 3001

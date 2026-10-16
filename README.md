@@ -1,196 +1,220 @@
-# react-tomato-talk
+# 🍅 React Tomato Talk (v2.0)
 
-`react`와 `socket.io`, `socket.io-client`을 통해서 만든 익명 채팅 모듈입니다.  
-소켓 통신을 통한 실시간 익명 채팅 기능을 웹컴포넌트 방식으로 제공하여서 기존의 사이트나  
-다양한 레이아웃에 쉽게 접목 시킬 수 있도록 하기 위한 오픈소스 프로젝트입니다.  
-현재는 간단한 *n:n 익명 채팅* 기능을 제공하고 있으며 추가적인 기능 및 설정을 지속적으로 업데이트 할 예정이니 자세한 내용은 아래의 업데이트 기록을 확인 해보시길 바랍니다.  
-``기본적으로 해당 컴포넌트는 flex 반응형 레이아웃으로 구성 되어 있습니다.``  
-``프론트엔드 패키지외에도 따로 socket.io 또는 sockjs으로 구성된 채팅 서버가 필요합니다.``  
+> **리액트 올인원 실시간 채팅 SDK & UI 키트**  
+> **익명채팅방**, **그룹채팅**, **1:1 개인채팅(DM)**, **랜덤채팅** 4가지 모드를 지원하며, 완성형 UI 컴포넌트와 유연한 Headless Hook을 모두 제공합니다.
 
-## 데모 버전
+---
 
-![토마토톡](./assets/chat.gif)  
-[토마토톡데모](https://yoonjonglyu.github.io/webChat/)
+## 🌟 주요 특징
 
-**링크를 통해서 확인 가능한 데모 버전의 채팅창 부분을 모듈화한게 본 패키지입니다.**  
-**데모 버전의 경우 개발 중인 기능이 포함 되어 있을 수 있으니 참고하시길 바랍니다.**
-**해당 데모는 Heroku 무료 호스팅을 이용중이므로 속도가 느립니다.**
+- 🎭 **익명 채팅 (Anonymous Chat)**: 무작위 토마토 닉네임 자동 생성, 익명 라운지 및 태그별 토크방 참여.
+- 👥 **그룹 채팅 (Group Chat)**: 대화방 개설 (제목, 주제 태그, 정원 설정), 실시간 참여자 목록 및 인원 수 카운트.
+- 💬 **1:1 개인 채팅 (Direct Chat)**: 온라인 사용자 디렉토리, 1:1 비밀 대화 세션 및 실시간 입력 감지(Typing indicator).
+- ⚡ **랜덤 채팅 (Random Chat)**: 관심 주제별/전체 랜덤 매칭 큐, 1:1 페어링, "다음 상대 찾기(Next)" 및 퇴장 처리.
+- 🧩 **2-in-1 아키텍처**:
+  - **All-in-One UI**: `<TomatoTalk />` 컴포넌트 하나로 4개 모드 탭 인터페이스 즉시 사용.
+  - **Headless Hooks**: `useTomatoSocket`, `useAnonymousChat`, `useGroupChat`, `useDirectChat`, `useRandomChat`으로 나만의 디자인에 채팅 로직만 결합.
+- 🔒 **AES 양방향 암호화**: `secretKey` prop 하나로 클라이언트 간 종단간(E2EE) 메시지 암호화 지원.
+- 🤖 **AI 코딩 어시스턴트 스킬 내장**: 패키지 내 `skills/react-tomato-talk/SKILL.md`가 동봉되어 Antigravity, Cursor, Claude, Copilot 등 AI 에이전트가 완벽한 구현 가이드를 즉시 인식합니다.
+- 📦 **모던 빌드 & 풀 타입스크립트**: ESM / CommonJS 듀얼 빌드 및 정확한 TypeScript 타입 정의(`index.d.ts`) 내장.
 
-## 설치
+---
 
-```bash
-npm npm i react-tomato-talk
-//or
-yarn add react-tomato-talk
+## 📂 모노레포 구조
+
+```text
+react-tomato-talk
+├── packages/
+│   ├── react-tomato-talk/       # NPM 배포용 React 클라이언트 라이브러리 (v2.0)
+│   │   ├── src/hooks/           # Headless React Hooks
+│   │   ├── src/components/      # 모던 UI 컴포넌트 (TomatoTalk 및 개별 뷰)
+│   │   ├── skills/              # AI Agent Skill (NPM 패키지 동봉)
+│   │   └── dist/                # ESM, CJS, DTS 빌드 산출물
+│   │
+│   └── server/                  # Socket.IO 기반 레퍼런스 채팅 백엔드 서버
+│       └── src/index.ts         # 익명 / 그룹 / 1:1 / 랜덤 매칭 처리기
+│
+├── .agents/skills/              # 프로젝트 루트 AI Agent Skill 정의
+└── examples/
+    └── playground/              # Vite 기반 실시간 양방향 대화 시뮬레이터 (Playground)
 ```
 
-## 사용법
+---
 
-### 프론트 엔드
+## 🚀 빠른 시작
 
-```js
+### 1. 패키지 설치
+
+```bash
+npm install react-tomato-talk socket.io-client
+# 또는
+pnpm add react-tomato-talk socket.io-client
+# 또는
+yarn add react-tomato-talk socket.io-client
+```
+
+### 2. 완성형 UI 컴포넌트 사용
+
+```tsx
 import React from 'react';
-import ReactTomatoTalk from 'react-tomato-talk';
+import { TomatoTalk } from 'react-tomato-talk';
+import 'react-tomato-talk/styles/tomato.css'; // 또는 'react-tomato-talk/style.css'
 
-const App = function () {
-    return (
-        <main>
-            채팅창
-            <section
-                className="container"
-                style={{
-                    display: "flex", // tomatoTalk 컴포넌트는 flex 레이아웃으로 이루어져 있습니다.
-                    flex: "1",
-                    maxWidth: "350px", // maxWidth를 통해서 채팅창 가로너비를 반응형으로 지정해줄 수 있습니다.
-                    maxHeight: "645px" // height를 통해서 채팅창 높이를 지정해줄 수 있습니다.
-                }}
-            >
-                <ReactTomatoTalk
-                    url={'http://localhost:3000/'} //소켓서버 url입니다.
-                    imageSize={5} // MB 단위 이미지 전송 사이즈 제한 기능. Props 안할 경우 기본값은 1MB다.
-                    secretKey='시크릿 키' // 메시지 전송 양방향 암호화 config 미입력시 암호화하지 않는다.
-                />
-            </section>
-        </main>
-    );
+export const App = ({ currentUser }) => {
+  return (
+    <main style={{ maxWidth: '420px', height: '680px', margin: '40px auto' }}>
+      {/* 4가지 채팅 모드 통합 위젯 */}
+      <TomatoTalk
+        url="https://socket.myservice.com" // 소켓 서버 주소 (테스트용은 "mock")
+        mode="all"                         // 'all' | 'anonymous' | 'group' | 'direct' | 'random'
+        defaultTab="group"                 // 시작 탭
+        secretKey="my-service-aes-key"     // (선택) E2EE 메시지 암호화 키
+        user={{
+          id: currentUser.id,
+          nickname: currentUser.name,
+          avatar: currentUser.avatar
+        }}
+      />
+    </main>
+  );
 };
 ```
 
-### 벡엔드
+#### 특정 모드 전용 컴포넌트로 사용하기
+```tsx
+import { AnonymousChatView, RandomChatView, GroupChatView, DirectChatView, useTomatoSocket } from 'react-tomato-talk';
 
->  
-> 해당 모듈을 위해서 현재 필요한 소켓 이벤트는 connection, rooms, headCount, join, send, sendImage, leave, disconnect가 있다.  
-> 기능 추가에 따라서 벡엔드 로직이 추가되거나 일부 수정 될수 있으므로 업데이트시 확인바랍니다.  
-> 
+// TomatoTalk mode prop 지정:
+<TomatoTalk url="https://socket.myservice.com" mode="random" />
 
-```js
-const { Server } = require("socket.io"); // cors 설정 주의.
-const CryptoJS = require("crypto-js"); // 메시지 양방향 암호화 관련  crypto-js 적용
-const io = new Server({
-    transports: ["websocket"], // 현재는 웹소켓 방식만 지원해준다.
-    maxHttpBufferSize: 5 * 1024 * 1024 // 단일 메시지 바이트수 제한 5(MB) * 1024 * 1024 = MB
-});
-
-const usrList = {}; // 사용자가 들어간 채팅방을 기록하는 객체;
-const roomList = ['채팅방#1', '#1'] // 채팅방 목록 길이가 2부터 채팅방 선택이 됩니다.
-const rooms = { // 각 채팅방 참가자 목록
-    "채팅방#1": [],
-    "#1": [],
-}; // 채팅방 선택 기능의 경우 벡엔드 서버의 roomList의 갯수가 1개 이상일때 자동으로 활성화 됩니다.
-io.on("connection", (client) => {
-    client.on('rooms', () => { // 사용자가 요청하면 채팅방 목록을 전송
-        io.emit('rooms', roomList);
-    });
-    client.on('headCount', () => { // 사용자가 요청 할시 해당 채팅방 인원 정보를 전송
-        io.emit('headCount', rooms);
-    });
-    client.on('join', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에 갈지를 받는다.
-        client.join(data.room); // 해당 채팅방에 join
-        usrList[data.socketIdx] = data.room; // 해당 유저가 어느 방에 들어갔는지 기록
-        rooms[data.room].push(data.socketIdx); // 해당 채팅방 참여인원에 추가
-        io.to(data.room).emit('joinRoom', data.socketIdx); // 해당 채팅방에 대화참여 메시지 전송
-    });
-    client.on('leave', data => { // {socketIdx, room} 해당 유저 식별키와 어떤 방에서 나올지를 받는다.
-        client.leave(data.room); // room에서 벗어난다.
-        delete usrList[data.socketIdx]; // 해당유저가 채팅방에서 벗어남을 기록
-        rooms[data.room] = this.rooms[data.room].filter((el) => el !== data.socketIdx); // 해당 채팅방 참여 인원에서 제거
-        io.to(data.room).emit('leaveRoom', data.socketIdx); // 대화 이탈 메시지 전송
-    });
-    client.on('send', data => { // {message, socketIdx, room} 사용자가 보낸 메시지를 받아서 해당 채팅방에 전송
-        //  현재는 채팅 메시지에 대한 암호화만 제공 한다.
-        data = JSON.parse(CryptoJS.AES.decrypt(data, '시크릿 키').toString(CryptoJS.enc.Utf8)); // 양방향 암호화 사용시 처리
-        // 암호화 사용시
-        io.to(data.room).emit('receive', CryptoJS.AES.encrypt(JSON.stringify({
-            message: data.message,
-            idx: data.socketIdx
-        }), '시크릿 키').toString());
-
-        // 암호화 미사용시
-        io.to(data.room).emit('receive', {
-            message: data.message,
-            idx: data.socketIdx
-        });
-    });
-    client.on('sendImage', data => { // {socketIdx, message, room} 사용자가 전송한 이미지를 받아서 해당 채팅방에 전송 
-        io.to(data.room).emit('receiveImage', {
-            message: data.message,
-            idx: data.socketIdx
-        });
-    });
-    client.on('disconnect', () => { // 연결해제시 채팅서버에 기록된 해당 유저의 채팅방에 이탈 메시지 전송
-        if (usrList[client.id]) {
-            io.to(usrList[client.id]).emit('leaveRoom', client.id); // 대화이탈에 대한 메시지 전송
-            rooms[usrList[client.id]] = rooms[usrList[client.id]].filter((el) => el !== client.id); // 해당 채팅방 참여 인원에서 제거
-            delete usrList[client.id]; // 메모리에서 해당 유저의 데이터 삭제
-        }
-    });
-});
-
-io.listen(3000);
+// 또는 전용 View 컴포넌트 사용:
+const { socket, currentUser, sendMessage } = useTomatoSocket({ url: '...' });
+<GroupChatView socket={socket} currentUser={currentUser} sendMessage={sendMessage} />
 ```
 
-### Props
+---
 
-1. **`url(string)`** : 소켓서버의 url입니다.  
-2. **`imageSize(number ?)`** : 이미지 전송 기능의 사이즈 제한입니다. 최소 단위는 MB(메가 바이트)이며 `기본 값은 1MB`입니다.    
-* 추가적으로 벡엔드의 소켓 이미지 제한을 조정하셔야 합니다.  
-3. **`secretKey(string ?)`** : 채팅 메시지 양방향 암호화 시크릿키입니다. 임의의 문자열을 입력해주시면 양방향 암호화를 적용 할 수 있습니다.
+## 🎨 Headless Hooks (커스텀 UI / TailwindCSS)
 
+원하는 스타일과 컴포넌트 라이브러리(Tailwind, Styled-components, Chakra 등)에 실시간 통신 로직만 바인딩할 수 있습니다.
 
-### 벡엔드 소켓 이벤트
+```tsx
+import React, { useState } from 'react';
+import { useTomatoSocket, useGroupChat } from 'react-tomato-talk';
 
-1. **`rooms`** : 채팅방 목록을 보내주는 이벤트입니다. `['채팅방#1']` 으로 채팅방 이름 목록을 보내줄 수 있습니다.(현재는 다중 채팅방을 지원하지 않습니다.)  
-2. **`headCount`** : 채팅방에 참여한 참여인원 목록을 보내주는 이벤트입니다. `{"채팅방#1": []}` 으로 해당 채팅방 참여 인원을 보내 줄 수 있습니다.  
-3. **`join | leave`** : 특정 채팅방에 참여하거나 벗어나는 이벤트입니다.  
-4. **`send`** : 서로간의 메시지를 전송하는 이벤트 입니다. (텍스트)  
-5. **`sendImage`** : 이미지를 전송하는 이벤트입니다.(arraybuffer)  
-  
-### 업데이트
-- 1.1.0
-  - 초기 버전 배포.
-- 1.2.0
-  - 서버 연결 상태 관련 UI 추가: 연결중, 연결해제 및 실패.
-- 1.2.1
-  -  패키지 제공 방식이 커스텀훅 => 고차컴포넌트로 변경.
-- 1.2.3
-  - 채팅 소켓 인스턴스 컨텍스트 관리 개선
-  - 채팅 메시지 수신 시간 표시(클라이언트 기준 시간)
-- 1.2.4
-  - 패키지 타입 수정 커스텀훅 => 고차컴포넌트
-- 1.3.2
-  - 소켓 인스턴스 초기화 부분 개선
-  - 사진전송(base64) 기능 추가
-- 1.3.3
-  - 채팅메시지 입력폼 스타일 리뉴얼
-  - 메시지 자동스크롤
-- 1.4.0
-  - 채팅방 상단 해더 추가 (채팅방 이름, 현재 인원 표시)
-  - 벡엔드 채팅방 목록 및 인원 관련 로직 추가(채팅방선택 & 채팅인원 관련 필요)
-  - 채팅방 선택 및 1:1 개인 채팅 기능 개발중
-- 1.4.2
-  - 이미지 전송 사이즈 제한 추가(500kb) *추후 커스텀 가능
-  - 사진 전송 파일형식, 용량 제한 경고 모달 추가
-  - 사진 확대 보기 추가
-- 1.4.4
-  - 이미지 전송 소켓 이벤트 분리 => 벡엔드 로직 추가 sendImages & receiveImage 이벤트
-  - 이미지 사이즈 제한 Props 추가 기본 값 1MB, 단위 MB
-- 1.5.0
-  - 채팅방 참여 인원 리스트 모달 추가
-- 1.6.0
-  - 채팅메시지 송수신 로직 개선 등 코드 리팩토링
-  - 채팅방 선택 기능 추가 (벡엔드 로직 join, leave 이벤트 일부 수정, 디자인 개선중)
-- 1.6.2
-  - 멀티 채팅방 선택에서 채팅방 인원 표시 기능 추가
-  - 멀티 채팅방에서 상단 X버튼으로 해당 채팅방 이탈 기능 추가
-- 1.6.4
-  - 전송된 이미지 다운로드 기능 추가
-  - 이미지 hover시 이미지 상단에 Download 버튼 출현으로 다운로드 가능
-- 1.6.9
-  - 메시지 전송 관한 양방향 암호화 설정 가능.(현재는 단순 채팅 메시지만 적용)  
-- 1.6.12
-  - 방목록 & 인원 목록 스타일링 수정.
+export const CustomTailwindChat = ({ roomId, user }) => {
+  // 1. 소켓 수명주기 & 사용자 상태
+  const { socket, isConnected } = useTomatoSocket({
+    url: 'https://socket.myservice.com',
+    user
+  });
 
+  // 2. 그룹 채팅 상태 & 액션
+  const { messages, sendTextMessage } = useGroupChat({
+    socket,
+    currentUser: user,
+    sendMessage: (rId, text) => socket?.emit('message:send', { roomId: rId, content: text })
+  });
 
-### LICENSE
+  const [input, setInput] = useState('');
 
-react-daumpost-hook is [MIT licensed](./LICENSE).
+  const onSend = () => {
+    if (!input.trim()) return;
+    sendTextMessage(input);
+    setInput('');
+  };
+
+  return (
+    <div className="flex flex-col h-[550px] w-full max-w-md bg-slate-900 text-white rounded-2xl p-4">
+      <div className="flex justify-between items-center pb-2 border-b border-slate-700">
+        <span className="font-bold">그룹 대화방</span>
+        <span className={isConnected ? "text-emerald-400 text-xs" : "text-rose-400 text-xs"}>
+          {isConnected ? "● 온라인" : "○ 오프라인"}
+        </span>
+      </div>
+      <div className="flex-1 overflow-y-auto py-3 space-y-2">
+        {messages.map((m) => (
+          <div key={m.id} className={m.senderId === user.id ? "text-right" : "text-left"}>
+            <span className="text-xs text-slate-400">{m.senderName}</span>
+            <div className="inline-block bg-rose-500 px-3 py-1.5 rounded-xl text-sm mt-0.5">
+              {m.content}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-2 pt-2 border-t border-slate-700">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing) return; // 한글 조합 중복 방지
+            if (e.key === 'Enter') onSend();
+          }}
+          className="flex-1 bg-slate-800 px-3 py-2 rounded-xl text-sm outline-none"
+          placeholder="메시지 입력..."
+        />
+        <button onClick={onSend} className="bg-rose-500 px-4 py-2 rounded-xl text-sm font-bold">
+          전송
+        </button>
+      </div>
+    </div>
+  );
+};
+```
+
+---
+
+## 🤖 AI Agent Skill 지원
+
+`react-tomato-talk`는 AI 기반 페어 프로그래밍 환경(Antigravity, Cursor, Claude Code, GitHub Copilot)을 위한 **공식 Agent Skill**을 패키지 내에 기본 동봉합니다.
+
+- **패키지 내 포함 경로**: `node_modules/react-tomato-talk/skills/react-tomato-talk/SKILL.md`
+- **워크스페이스 등록**: `.agents/skills/react-tomato-talk/SKILL.md`
+- **효과**: AI 어시스턴트에게 `react-tomato-talk`로 채팅 기능을 구현해달라고 요청하면, AI가 패키지의 API 스펙, Hooks 사용법, Socket 이벤트 스키마, 한글 IME 중복 방지 등의 모범 사례를 자동으로 파악하여 완벽한 코드를 작성합니다.
+
+---
+
+## 🖥️ 로컬 테스트 및 플레이그라운드
+
+본 모노레포에 내장된 서버와 플레이그라운드로 모든 기능을 즉시 테스트할 수 있습니다.
+
+```bash
+# 1. 의존성 설치
+pnpm install
+
+# 2. 백엔드 서버 시작 (포트 3001)
+pnpm run dev:server
+
+# 3. 대화형 플레이그라운드 시작 (포트 5173)
+pnpm run dev:playground
+```
+
+브라우저에서 `http://localhost:5173` 접속 시 한 화면에 2대의 클라이언트가 분할 실행되어, 1:1 대화 및 랜덤 매칭 페어링을 즉시 확인하실 수 있습니다.
+
+---
+
+## 📋 API 레퍼런스
+
+### `<TomatoTalk />` Props
+| Prop | 타입 | 기본값 | 설명 |
+| :--- | :--- | :--- | :--- |
+| `url` | `string` | **필수** | Socket.IO 서버 URL (또는 무서버 테스트용 `"mock"`) |
+| `mode` | `'all' \| 'anonymous' \| 'group' \| 'direct' \| 'random'` | `'all'` | 제공할 채팅 모드 |
+| `defaultTab` | `'anonymous' \| 'group' \| 'direct' \| 'random'` | `'anonymous'` | 초기 활성 탭 |
+| `secretKey` | `string` | `undefined` | AES-256 종단간 양방향 암호화 비밀키 |
+| `user` | `Partial<TomatoUser>` | 자동 생성 | 사용자 초기 정보 (`id`, `nickname`, `avatar`) |
+| `maxImageSizeMB` | `number` | `5` | 이미지 첨부 허용 최대 크기(MB) |
+| `className` | `string` | `''` | 컨테이너 커스텀 클래스 |
+| `style` | `React.CSSProperties` | `undefined` | 인라인 스타일 |
+
+### 제공 Hooks
+- `useTomatoSocket(config)`: 기본 소켓 연결, 자동 재연결 및 사용자 상태 관리.
+- `useAnonymousChat({ socket, currentUser, sendMessage, secretKey })`: 익명 채팅방, 닉네임 재생성, 방 전환.
+- `useGroupChat({ socket, currentUser, sendMessage, secretKey })`: 그룹방 생성, 목록 조회, 참여/퇴장.
+- `useDirectChat({ socket, currentUser, sendMessage, secretKey })`: 1:1 온라인 유저 목록, 개인 대화방, 입력 중 알림.
+- `useRandomChat({ socket, currentUser, sendMessage, secretKey })`: 랜덤 매칭 큐 대기, 페어링, 다음 상대 전환.
+
+---
+
+## 📄 라이선스
+MIT License © [ISA (yoonjonglyu)](https://github.com/yoonjonglyu)
