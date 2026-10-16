@@ -3,6 +3,12 @@
 > **리액트 올인원 실시간 채팅 SDK & UI 키트**  
 > **익명채팅방**, **그룹채팅**, **1:1 개인채팅(DM)**, **랜덤채팅** 4가지 모드를 지원하며, 완성형 UI 컴포넌트와 유연한 Headless Hook을 모두 제공합니다.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Playground%20데모-ff4757?style=for-the-badge&logo=googlechrome&logoColor=white)](https://yoonjonglyu.github.io/react-tomato-talk/)
+[![npm version](https://img.shields.io/npm/v/react-tomato-talk?style=for-the-badge&color=2ed573)](https://www.npmjs.com/package/react-tomato-talk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-38bdf8?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+👉 **온라인 라이브 데모 (GitHub Pages)**: [https://yoonjonglyu.github.io/react-tomato-talk/](https://yoonjonglyu.github.io/react-tomato-talk/)
+
 ---
 
 ## 🌟 주요 특징
